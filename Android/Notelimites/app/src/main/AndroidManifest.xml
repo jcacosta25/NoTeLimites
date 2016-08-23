@@ -8,8 +8,10 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:name=".NTLApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -28,9 +30,19 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <meta-data  android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps">
+        </activity>
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

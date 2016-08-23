@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">No te limites</string>
     <string name="title_activity_maps">Map</string>
+    <string name="facebook_app_id">928693540575106</string>
 </resources>
