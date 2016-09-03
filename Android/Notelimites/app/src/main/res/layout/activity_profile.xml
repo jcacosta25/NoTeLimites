@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.burocreativo.notelimites.profile.ProfileActivity">
+    
+    <RelativeLayout
+        android:background="@drawable/back_inicio"
+        android:layout_width="match_parent"
+        android:layout_height="225dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
+            <android.support.v4.widget.CircleImageView
+                android:layout_gravity="center"
+                android:id="@+id/profile_pic_img"
+                android:layout_marginTop="32dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+            
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center"
+                android:id="@+id/profile_name_txt"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:text="Manuel"
+                android:textColor="@color/tab_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:id="@+id/profile_lastname_txt"
+                android:text="Mendoza"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/tab_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

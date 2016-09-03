@@ -2,4 +2,26 @@
     <string name="app_name">No te limites</string>
     <string name="title_activity_maps">Map</string>
     <string name="facebook_app_id">928693540575106</string>
+
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
+    <string-array name="Tags">
+        <item>Mi Perfil</item>
+        <item>Blog</item>
+        <item>Soporte</item>
+        <item>Contacto</item>
+        <item>Agradecimientos</item>
+        <item>Instituciones Culturales</item>
+        <item>Salir</item>
+    </string-array>
+
+    <array name="Icon">
+        <item>@drawable/ic_person_outline</item>
+        <item>@drawable/ic_library_books</item>
+        <item>@drawable/ic_headset</item>
+        <item>@drawable/ic_chat</item>
+        <item>@drawable/ic_collection</item>
+        <item>@drawable/ic_location_city</item>
+        <item>@drawable/ic_exit</item>
+    </array>
 </resources>

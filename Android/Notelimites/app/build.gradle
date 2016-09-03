@@ -10,7 +10,6 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -33,4 +32,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile 'com.google.android.gms:play-services:9.4.0'
     compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile 'com.android.support:design:24.2.0'
 }

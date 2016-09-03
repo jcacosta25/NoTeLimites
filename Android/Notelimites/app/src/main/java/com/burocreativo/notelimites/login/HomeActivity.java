@@ -1,10 +1,11 @@
-package com.burocreativo.notelimites;
+package com.burocreativo.notelimites.login;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.burocreativo.notelimites.R;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;

@@ -17,7 +17,39 @@
         android:layout_gravity="center"
         android:padding="8dp"
         android:background="@drawable/search_back"
-        android:layout_width="170dp"
-        android:layout_height="40dp" />
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:layout_width="240dp"
+        android:layout_height="45dp" />
+    
+    <TextView
+        android:layout_margin="64dp"
+        android:layout_gravity="center"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:text="Usaremos tu ubicacion para mostrarte los mejores eventos cercanos"
+        />
+
+    <Button
+        android:layout_width="240dp"
+        android:layout_height="45dp"
+        android:text="Encontrar Ubicacion"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white"
+        android:background="@android:color/holo_red_light"
+        />
+
+    <TextView
+        android:layout_weight="1"
+        android:paddingBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray"
+        android:gravity="bottom|center"
+        android:text="Terminos y condiciones"
+        />
 
 </LinearLayout>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/back_inicio"
-    tools:context=".HomeActivity">
+    tools:context=".login.HomeActivity">
 
     <ImageView
         android:id="@+id/login_logo"
