@@ -1,6 +1,7 @@
 package com.burocreativo.notelimites.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.io.models.Event;
+import com.burocreativo.notelimites.page.PageEventActivity;
 
 import java.util.List;
 
@@ -29,6 +31,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_list_event, parent, false);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, PageEventActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+            }
+        });
         return new ViewHolder(v);
     }
 

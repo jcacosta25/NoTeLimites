@@ -1,10 +1,12 @@
 package com.burocreativo.notelimites.profile;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.profile.adapters.ViewPagerAdapter;
@@ -22,8 +24,14 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_left);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
         tabs = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.profile_viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -32,5 +40,16 @@ public class ProfileActivity extends AppCompatActivity {
         tabs.setTabGravity(TabLayout.GRAVITY_FILL);
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
