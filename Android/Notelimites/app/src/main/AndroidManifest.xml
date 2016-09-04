@@ -39,7 +39,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".home.MapsActivity"
+            android:name=".home.HomeActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
@@ -49,8 +49,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.HomeActivity"></activity>
-        <activity android:name=".profile.ProfileActivity"></activity>
+        <activity android:name=".login.StartActivity" />
+        <activity android:name=".profile.ProfileActivity" />
+        <activity android:name=".page.PageActivity"></activity>
     </application>
 
 </manifest>

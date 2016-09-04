@@ -1,5 +1,6 @@
 package com.burocreativo.notelimites.home;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -9,18 +10,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.home.adapters.DrawerItem;
 import com.burocreativo.notelimites.home.adapters.DrawerListAdapter;
-import com.burocreativo.notelimites.home.adapters.EventListAdapter;
+import com.burocreativo.notelimites.adapters.EventListAdapter;
 import com.burocreativo.notelimites.io.models.Event;
+import com.burocreativo.notelimites.profile.ProfileActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,7 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private RecyclerView eventList;
@@ -127,6 +131,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mDrawerList.setAdapter(new DrawerListAdapter(getApplicationContext(),item));
         // Set the list's click listener
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -162,4 +167,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         return super.onOptionsItemSelected(item);
     }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
+
+    /** Swaps fragments in the main content view */
+    private void selectItem(int position) {
+        Log.e("selectItem: ",String.valueOf(position) );
+        // Create a new fragment and specify the planet to show based on position
+       if(position == 1){
+           Intent intent = new Intent(getApplicationContext(), ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+           startActivity(intent);
+       }
+    }
+
 }

@@ -1,8 +1,8 @@
 package com.burocreativo.notelimites.login;
 
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.burocreativo.notelimites.R;
@@ -20,7 +20,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class HomeActivity extends FragmentActivity {
+public class StartActivity extends FragmentActivity {
 
     private CallbackManager callbackManager;
     private LoginButton fb_login_button;
@@ -78,5 +78,11 @@ public class HomeActivity extends FragmentActivity {
         };
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode,resultCode,data);
     }
 }

@@ -3,48 +3,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.burocreativo.notelimites.profile.ProfileActivity">
-    
-    <RelativeLayout
-        android:background="@drawable/back_inicio"
-        android:layout_width="match_parent"
-        android:layout_height="225dp">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true">
-            <android.support.v4.widget.CircleImageView
-                android:layout_gravity="center"
-                android:id="@+id/profile_pic_img"
-                android:layout_marginTop="32dp"
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
-            
-            <TextView
-                android:layout_marginTop="16dp"
-                android:layout_gravity="center"
-                android:id="@+id/profile_name_txt"
-                android:textStyle="bold"
-                android:textSize="25sp"
-                android:text="Manuel"
-                android:textColor="@color/tab_selected"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
-            <TextView
-                android:layout_marginTop="8dp"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:background="@drawable/back_inicio"
+            android:layout_width="match_parent"
+            android:layout_height="235dp">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"/>
+            <LinearLayout
                 android:layout_gravity="center"
-                android:id="@+id/profile_lastname_txt"
-                android:text="Mendoza"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                android:textColor="@color/tab_selected"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:src="@drawable/profile_pic"
+                    android:id="@+id/profile_pic_img"
+                    android:layout_width="95dp"
+                    android:layout_height="95dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="32dp" />
+
+                <TextView
+                    android:id="@+id/profile_name_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:text="Manuel"
+                    android:textColor="@color/tab_selected"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/profile_lastname_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Mendoza"
+                    android:textColor="@color/tab_selected"
+                    android:textSize="25sp"
+                    android:layout_marginBottom="16dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            style="@style/AppTheme.Tabs"
+            app:tabIndicatorColor="@android:color/white"
+            app:tabBackground="@drawable/profile_selected_tab"
+            android:background="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/profile_viewpager"
+        android:background="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
