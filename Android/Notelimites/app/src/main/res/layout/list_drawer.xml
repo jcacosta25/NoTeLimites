@@ -20,7 +20,6 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="Item"
-
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/tab_selected" />
 

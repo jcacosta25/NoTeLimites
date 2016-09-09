@@ -24,4 +24,7 @@
         <item>@drawable/ic_location_city</item>
         <item>@drawable/ic_exit</item>
     </array>
+
+    <string name="ok">OK</string>
+    <string name="permission_location_rationale">Los permisos de ubicacion son necesarios para la busqueda de eventos.</string>
 </resources>

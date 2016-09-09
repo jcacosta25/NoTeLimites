@@ -38,7 +38,7 @@
         android:text="Encontrar Ubicacion"
         android:layout_gravity="center"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_red_light"
+        android:background="@color/colorAccent"
         />
 
     <TextView
