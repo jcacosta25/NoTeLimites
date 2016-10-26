@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/view"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/back_inicio"
     android:orientation="vertical">
 
@@ -21,11 +23,12 @@
         android:layout_width="240dp"
         android:layout_height="45dp" />
     
-    <TextView
+    <de.morrox.fontinator.FontTextView
         android:layout_margin="64dp"
         android:layout_gravity="center"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
+        app:font="MyriandPro-lt.otf"
         android:textColor="@android:color/white"
         android:gravity="center"
         android:textSize="14sp"
@@ -33,6 +36,7 @@
         />
 
     <Button
+        android:id="@+id/search_button"
         android:layout_width="240dp"
         android:layout_height="45dp"
         android:text="Encontrar Ubicacion"
@@ -41,12 +45,13 @@
         android:background="@color/colorAccent"
         />
 
-    <TextView
+    <de.morrox.fontinator.FontTextView
         android:layout_weight="1"
         android:paddingBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12sp"
+        app:font="MyriandPro-lt.otf"
         android:textColor="@android:color/darker_gray"
         android:gravity="bottom|center"
         android:text="Terminos y condiciones"

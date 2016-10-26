@@ -30,10 +30,11 @@
                 android:layout_margin="16dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <de.morrox.fontinator.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="bottom"
+                    app:font="MyriandPro-Regular.otf"
                     android:text="Auditorio Banamex"
                     android:textColor="@android:color/white"
                     android:textSize="25sp"
@@ -54,7 +55,8 @@
         </RelativeLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
+    <de.morrox.fontinator.FontTextView
+        app:font="MyriandPro-lt.otf"
         android:id="@+id/page_place_location_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,14 +75,15 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
+        <de.morrox.fontinator.FontTextView
+            app:font="MyriandPro-lt.otf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Auditorio Banamex"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
+        <de.morrox.fontinator.FontTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -119,9 +122,10 @@
         android:background="@drawable/back_inicio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
+        <de.morrox.fontinator.FontTextView
             android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp"
+            app:font="MyriandPro-lt.otf"
             android:textColor="@color/tab_selected"
             android:text="Otros eventos en este lugar"
             android:textSize="14sp"

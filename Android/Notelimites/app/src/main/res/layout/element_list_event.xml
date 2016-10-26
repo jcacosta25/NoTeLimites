@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="16dp"
     android:background="@drawable/simple_plan"
     android:orientation="vertical">
@@ -19,17 +20,19 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
-            <TextView
+            <de.morrox.fontinator.FontTextView
+                app:font="MyriandPro-lt.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:textColor="@android:color/holo_red_light"
+                android:textColor="@color/colorAccent"
                 android:text="24"
                 />
-            <TextView
+            <de.morrox.fontinator.FontTextView
+                app:font="MyriandPro-lt.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sept."
@@ -44,10 +47,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <TextView
+            <de.morrox.fontinator.FontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Simple Plan"
+                app:font="MyriandPro-Regular.otf"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
@@ -59,18 +63,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <de.morrox.fontinator.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_location"
                     android:text="Arena Monterrey"
+                    app:font="MyriandPro-lt.otf"
                     android:textColor="@android:color/white"
                     />
 
-                <TextView
+                <de.morrox.fontinator.FontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="292 Pers."
+                    app:font="MyriandPro-lt.otf"
                     android:layout_marginLeft="16dp"
                     android:drawableLeft="@drawable/ic_person"
                     android:textColor="@android:color/white"

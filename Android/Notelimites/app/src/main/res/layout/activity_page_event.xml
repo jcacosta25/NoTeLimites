@@ -34,11 +34,12 @@
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <TextView
+                    <de.morrox.fontinator.FontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="bottom"
                         android:text="Simple Plan"
+                        app:font="MyriandPro-Regular.otf"
                         android:textColor="@android:color/white"
                         android:textSize="30sp"
                         android:textStyle="bold" />
@@ -47,20 +48,22 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-                        <TextView
+                        <de.morrox.fontinator.FontTextView
                             android:text="24 Septiembre 2016"
                             android:gravity="center"
+                            app:font="MyriandPro-lt.otf"
                             android:drawableLeft="@drawable/ic_date"
                             android:textColor="@color/tab_selected"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                         
-                        <TextView
+                        <de.morrox.fontinator.FontTextView
                             android:layout_marginLeft="4dp"
                             android:drawableLeft="@drawable/ic_time"
                             android:textColor="@color/tab_selected"
                             android:text="20:00 hrs"
                             android:gravity="center"
+                            app:font="MyriandPro-lt.otf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
@@ -87,17 +90,19 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
+        <de.morrox.fontinator.FontTextView
             android:id="@+id/page_place_location_txt"
             android:layout_weight="1"
+            app:font="MyriandPro-lt.otf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_location"
             android:padding="16dp"
             android:text="Arena Monterrey" />
 
-        <TextView
+        <de.morrox.fontinator.FontTextView
             android:layout_weight="1"
+            app:font="MyriandPro-lt.otf"
             android:text="292 personas asistiran"
             android:drawableLeft="@drawable/ic_person"
             android:layout_width="match_parent"
@@ -117,14 +122,15 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
+        <de.morrox.fontinator.FontTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Simple Plan"
+            app:font="MyriandPro-Regular.otf"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
+        <de.morrox.fontinator.FontTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -163,7 +169,8 @@
         android:background="@drawable/back_inicio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
+        <de.morrox.fontinator.FontTextView
+            app:font="MyriandPro-lt.otf"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp"
             android:textColor="@color/tab_selected"
