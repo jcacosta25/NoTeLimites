@@ -25,7 +25,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1QN-X9-aUn">
-                                <state key="normal" image="main_search_btn"/>
+                                <state key="normal" image="main_fb_login"/>
                                 <connections>
                                     <segue destination="Gm4-X7-hcd" kind="popoverPresentation" popoverAnchorView="1QN-X9-aUn" id="zdZ-JN-HTT">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -222,8 +222,8 @@
     </scenes>
     <resources>
         <image name="main_background" width="320" height="410"/>
+        <image name="main_fb_login" width="182" height="40"/>
         <image name="main_logo" width="218" height="23"/>
-        <image name="main_search_btn" width="182" height="40"/>
         <image name="main_search_icon" width="17" height="16"/>
         <image name="profile_background" width="320" height="186"/>
         <image name="profile_events_off_btn" width="158" height="40"/>

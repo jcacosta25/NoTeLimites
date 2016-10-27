@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B44ABC1E1DC1AF79009B629E /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = B44ABC1D1DC1AF79009B629E /* Podfile */; };
 		B4FFB4081DBC664F000CBA82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FFB4071DBC664F000CBA82 /* AppDelegate.swift */; };
 		B4FFB40A1DBC664F000CBA82 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FFB4091DBC664F000CBA82 /* ViewController.swift */; };
 		B4FFB40D1DBC664F000CBA82 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4FFB40B1DBC664F000CBA82 /* Main.storyboard */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B44ABC1D1DC1AF79009B629E /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		B4FFB4041DBC664F000CBA82 /* No te limites.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "No te limites.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4FFB4071DBC664F000CBA82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B4FFB4091DBC664F000CBA82 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 		B4FFB3FB1DBC664F000CBA82 = {
 			isa = PBXGroup;
 			children = (
+				B44ABC1D1DC1AF79009B629E /* Podfile */,
 				B4FFB4061DBC664F000CBA82 /* No te limites */,
 				B4FFB41B1DBC664F000CBA82 /* No te limitesTests */,
 				B4FFB4261DBC664F000CBA82 /* No te limitesUITests */,
@@ -273,6 +276,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B44ABC1E1DC1AF79009B629E /* Podfile in Resources */,
 				B4FFB4121DBC664F000CBA82 /* LaunchScreen.storyboard in Resources */,
 				B4FFB40F1DBC664F000CBA82 /* Assets.xcassets in Resources */,
 				B4FFB40D1DBC664F000CBA82 /* Main.storyboard in Resources */,
@@ -456,6 +460,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "~/Desktop/NoTeLimites/facebookSdk";
 				INFOPLIST_FILE = "No te limites/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "RedPandaTechnologies.No-te-limites";
@@ -549,6 +554,7 @@
 				B4FFB42E1DBC664F000CBA82 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B4FFB42F1DBC664F000CBA82 /* Build configuration list for PBXNativeTarget "No te limitesTests" */ = {
 			isa = XCConfigurationList;
@@ -557,6 +563,7 @@
 				B4FFB4311DBC664F000CBA82 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B4FFB4321DBC664F000CBA82 /* Build configuration list for PBXNativeTarget "No te limitesUITests" */ = {
 			isa = XCConfigurationList;
@@ -565,6 +572,7 @@
 				B4FFB4341DBC664F000CBA82 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
