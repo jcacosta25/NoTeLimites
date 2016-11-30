@@ -21,12 +21,13 @@ public class NTLApplication  extends Application{
     public void onCreate() {
         super.onCreate();
         FacebookSdk.sdkInitialize(getApplicationContext());
+        ServiceGenerator.authToken = null;
         Call<SignInResult> call = ServiceGenerator.getApiService().signin("manuel@notelimites.com","manumanu");
         call.enqueue(new Callback<SignInResult>() {
             @Override
             public void onResponse(Call<SignInResult> call, Response<SignInResult> response) {
                 if(response.isSuccessful()) {
-                    ServiceGenerator.authToken = response.body().getAuthToken();
+                    ServiceGenerator.authToken = "Token token=\""+response.body().getAuthToken()+"\"";
                 }
             }
 

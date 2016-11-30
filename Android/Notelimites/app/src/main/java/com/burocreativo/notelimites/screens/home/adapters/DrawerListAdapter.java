@@ -1,4 +1,4 @@
-package com.burocreativo.notelimites.home.adapters;
+package com.burocreativo.notelimites.screens.home.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.burocreativo.notelimites.R;
 
 import java.util.List;
+
 
 /**
  * Created by Juan C. Acosta on 9/3/2016.

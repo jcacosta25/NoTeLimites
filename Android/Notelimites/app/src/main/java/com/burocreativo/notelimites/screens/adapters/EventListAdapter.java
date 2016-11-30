@@ -1,4 +1,4 @@
-package com.burocreativo.notelimites.adapters;
+package com.burocreativo.notelimites.screens.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.io.models.Event;
-import com.burocreativo.notelimites.page.PageEventActivity;
+import com.burocreativo.notelimites.screens.page.PageEventActivity;
 
 import java.util.List;
 

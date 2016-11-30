@@ -1,4 +1,4 @@
-package com.burocreativo.notelimites.home;
+package com.burocreativo.notelimites.screens.home;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -20,11 +20,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.burocreativo.notelimites.R;
-import com.burocreativo.notelimites.home.adapters.DrawerItem;
-import com.burocreativo.notelimites.home.adapters.DrawerListAdapter;
-import com.burocreativo.notelimites.adapters.EventListAdapter;
+import com.burocreativo.notelimites.screens.home.adapters.DrawerItem;
+import com.burocreativo.notelimites.screens.home.adapters.DrawerListAdapter;
+import com.burocreativo.notelimites.screens.adapters.EventListAdapter;
 import com.burocreativo.notelimites.io.models.Event;
-import com.burocreativo.notelimites.profile.ProfileActivity;
+import com.burocreativo.notelimites.screens.profile.ProfileActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

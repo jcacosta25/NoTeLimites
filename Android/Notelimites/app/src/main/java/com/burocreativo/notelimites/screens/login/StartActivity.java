@@ -1,4 +1,4 @@
-package com.burocreativo.notelimites.login;
+package com.burocreativo.notelimites.screens.login;
 
 import android.Manifest;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.burocreativo.notelimites.R;
-import com.burocreativo.notelimites.home.HomeActivity;
+import com.burocreativo.notelimites.screens.home.HomeActivity;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;

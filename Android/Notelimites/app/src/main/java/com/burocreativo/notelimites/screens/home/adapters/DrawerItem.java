@@ -1,4 +1,4 @@
-package com.burocreativo.notelimites.home.adapters;
+package com.burocreativo.notelimites.screens.home.adapters;
 
 /**
  * Created by Juan C. Acosta on 9/3/2016.

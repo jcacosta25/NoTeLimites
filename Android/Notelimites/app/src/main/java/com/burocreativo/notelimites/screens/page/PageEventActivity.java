@@ -1,4 +1,4 @@
-package com.burocreativo.notelimites.page;
+package com.burocreativo.notelimites.screens.page;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,23 +9,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.burocreativo.notelimites.R;
-import com.burocreativo.notelimites.adapters.PageListAdapter;
+import com.burocreativo.notelimites.screens.adapters.PageListAdapter;
 import com.burocreativo.notelimites.io.models.Page;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PagePlaceActivity extends AppCompatActivity {
+public class PageEventActivity extends AppCompatActivity {
 
     private RecyclerView eventList;
     private Toolbar toolbar;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_page_place);
-        eventList = (RecyclerView) findViewById(R.id.moreEventPlaceList);
+        setContentView(R.layout.activity_page_event);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -33,8 +32,9 @@ public class PagePlaceActivity extends AppCompatActivity {
 
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_left);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
-        RecView();
+        eventList = (RecyclerView) findViewById(R.id.moreEventPlaceList);
 
+        RecView();
     }
 
     public void RecView(){

@@ -1,4 +1,4 @@
-package com.burocreativo.notelimites.adapters;
+package com.burocreativo.notelimites.screens.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

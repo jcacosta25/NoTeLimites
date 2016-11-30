@@ -1,4 +1,4 @@
-package com.burocreativo.notelimites.profile.adapters;
+package com.burocreativo.notelimites.screens.profile.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

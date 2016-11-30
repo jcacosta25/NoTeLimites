@@ -1,4 +1,4 @@
-package com.burocreativo.notelimites.profile;
+package com.burocreativo.notelimites.screens.profile;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,9 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.burocreativo.notelimites.R;
-import com.burocreativo.notelimites.profile.adapters.ViewPagerAdapter;
-import com.burocreativo.notelimites.profile.fragments.MyEventsFragment;
-import com.burocreativo.notelimites.profile.fragments.MyPlacesFragment;
+import com.burocreativo.notelimites.screens.profile.adapters.ViewPagerAdapter;
+import com.burocreativo.notelimites.screens.profile.fragments.MyEventsFragment;
+import com.burocreativo.notelimites.screens.profile.fragments.MyPlacesFragment;
 
 public class ProfileActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.burocreativo.notelimites.profile.fragments;
+package com.burocreativo.notelimites.screens.profile.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.burocreativo.notelimites.R;
-import com.burocreativo.notelimites.adapters.EventListAdapter;
+import com.burocreativo.notelimites.screens.adapters.EventListAdapter;
 import com.burocreativo.notelimites.io.models.Event;
 
 import java.util.ArrayList;
