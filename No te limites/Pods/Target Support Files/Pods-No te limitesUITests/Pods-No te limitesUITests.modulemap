@@ -1,0 +1,6 @@
+framework module Pods_No_te_limitesUITests {
+  umbrella header "Pods-No te limitesUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
