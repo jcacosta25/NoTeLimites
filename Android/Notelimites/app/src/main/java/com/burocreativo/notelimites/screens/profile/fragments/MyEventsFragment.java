@@ -3,14 +3,12 @@ package com.burocreativo.notelimites.screens.profile.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.burocreativo.notelimites.R;
-import com.burocreativo.notelimites.screens.adapters.EventListAdapter;
 import com.burocreativo.notelimites.io.models.Event;
 
 import java.util.ArrayList;
@@ -39,11 +37,11 @@ public class MyEventsFragment extends Fragment{
         for (int i = 0; i < 4 ; i++) {
             events.add(new Event());
         }
-        EventListAdapter ea = new EventListAdapter(events,getContext());
-        myEventRecycler.clearOnChildAttachStateChangeListeners();
-        myEventRecycler.setAdapter(ea);
-        myEventRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        myEventRecycler.setHasFixedSize(true);
-        myEventRecycler.getAdapter().notifyDataSetChanged();
+        //EventListAdapter ea = new EventListAdapter(events,getContext());
+        //myEventRecycler.clearOnChildAttachStateChangeListeners();
+        //myEventRecycler.setAdapter(ea);
+        //myEventRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        //myEventRecycler.setHasFixedSize(true);
+        //myEventRecycler.getAdapter().notifyDataSetChanged();
     }
 }

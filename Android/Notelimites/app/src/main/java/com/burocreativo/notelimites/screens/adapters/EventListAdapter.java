@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.burocreativo.notelimites.R;
-import com.burocreativo.notelimites.io.models.Event;
+import com.burocreativo.notelimites.io.models.events.Event;
 import com.burocreativo.notelimites.screens.page.PageEventActivity;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_list_event, parent, false);
         v.setOnClickListener(new View.OnClickListener() {
             @Override

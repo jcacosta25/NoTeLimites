@@ -7,7 +7,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,10 +19,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.burocreativo.notelimites.R;
+import com.burocreativo.notelimites.io.ServiceGenerator;
+import com.burocreativo.notelimites.io.models.Event;
 import com.burocreativo.notelimites.screens.home.adapters.DrawerItem;
 import com.burocreativo.notelimites.screens.home.adapters.DrawerListAdapter;
-import com.burocreativo.notelimites.screens.adapters.EventListAdapter;
-import com.burocreativo.notelimites.io.models.Event;
 import com.burocreativo.notelimites.screens.profile.ProfileActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,9 +31,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -89,9 +93,43 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         for (int i = 0; i < 4 ; i++) {
             events.add(new Event());
         }
-        eventList.setAdapter(new EventListAdapter(events,getApplicationContext()));
-        eventList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        eventList.setHasFixedSize(true);
+
+        JsonObject obj = new JsonObject();
+        obj.addProperty("lat","25.654117");
+        obj.addProperty("lng","-100.3601405");
+        /*Call<EventsList> call = ServiceGenerator.getApiService().getEventLocations(ServiceGenerator.authToken,obj);
+        call.enqueue(new Callback<EventsList>() {
+            @Override
+            public void onResponse(Call<EventsList> call, Response<EventsList> response) {
+                if(response.isSuccessful()) {
+                    eventList.setAdapter(new EventListAdapter(response.body().getEvents(), getApplicationContext()));
+                    eventList.setLayoutManager(new LinearLayoutManager(getApplication().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+                    eventList.setHasFixedSize(true);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EventsList> call, Throwable t) {
+
+            }
+        });*/
+
+        Call<JsonObject> call = ServiceGenerator.getApiService().getEventLocations(ServiceGenerator.authToken,obj);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                Log.e("NTL", "onResponse: "+response.code());
+                if(response.isSuccessful()){
+                    Log.d("NTL", "onResponse: "+response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+
     }
 
     public void startDrawer(){
@@ -137,8 +175,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(25.680855,-100.288276);
+        // Add a marker in Sydney and move the camera -100.3601405","25.654117
+        LatLng sydney = new LatLng(25.654117,-100.3601405);
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
         mMap.getUiSettings().setAllGesturesEnabled(false);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Arena Monterrey"));
