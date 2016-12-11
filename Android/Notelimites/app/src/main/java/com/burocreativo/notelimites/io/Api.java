@@ -1,8 +1,9 @@
 package com.burocreativo.notelimites.io;
 
 import com.burocreativo.notelimites.io.models.events.Event;
+import com.burocreativo.notelimites.io.models.events.EventsList;
+import com.burocreativo.notelimites.io.models.events.Location;
 import com.burocreativo.notelimites.io.models.token.SignInResult;
-import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -24,7 +25,7 @@ public interface Api {
 
     @Headers("Content-Type: application/json")
     @POST("/locations")
-    Call<JsonObject> getEventLocations(@Query("auth_token") String token, @Body JsonObject locations);
+    Call<EventsList> getEventLocations(@Query("auth_token") String token, @Body Location locations);
 
     @GET("/events/{eventid}")
     Call<Event> getEvent(@Path("eventid") String eventid);

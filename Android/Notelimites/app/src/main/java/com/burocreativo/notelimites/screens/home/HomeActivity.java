@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,6 +22,9 @@ import android.widget.ListView;
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.io.ServiceGenerator;
 import com.burocreativo.notelimites.io.models.Event;
+import com.burocreativo.notelimites.io.models.events.EventsList;
+import com.burocreativo.notelimites.io.models.events.Location;
+import com.burocreativo.notelimites.screens.adapters.EventListAdapter;
 import com.burocreativo.notelimites.screens.home.adapters.DrawerItem;
 import com.burocreativo.notelimites.screens.home.adapters.DrawerListAdapter;
 import com.burocreativo.notelimites.screens.profile.ProfileActivity;
@@ -97,7 +101,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         JsonObject obj = new JsonObject();
         obj.addProperty("lat","25.654117");
         obj.addProperty("lng","-100.3601405");
-        /*Call<EventsList> call = ServiceGenerator.getApiService().getEventLocations(ServiceGenerator.authToken,obj);
+        Call<EventsList> call = ServiceGenerator.getApiService().getEventLocations(ServiceGenerator.authToken,new Location("25.654117","-100.3601405"));
         call.enqueue(new Callback<EventsList>() {
             @Override
             public void onResponse(Call<EventsList> call, Response<EventsList> response) {
@@ -110,22 +114,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onFailure(Call<EventsList> call, Throwable t) {
-
-            }
-        });*/
-
-        Call<JsonObject> call = ServiceGenerator.getApiService().getEventLocations(ServiceGenerator.authToken,obj);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                Log.e("NTL", "onResponse: "+response.code());
-                if(response.isSuccessful()){
-                    Log.d("NTL", "onResponse: "+response.toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
 
             }
         });

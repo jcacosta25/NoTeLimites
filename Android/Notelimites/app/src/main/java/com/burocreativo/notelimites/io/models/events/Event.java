@@ -1,17 +1,22 @@
 package com.burocreativo.notelimites.io.models.events;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Event {
+import java.util.Date;
+
+public class Event implements Parcelable {
 
 	@SerializedName("end_date")
 	@Expose
-	private String endDate;
+	private Date endDate;
 
 	@SerializedName("init_date")
 	@Expose
-	private String initDate;
+	private Date initDate;
 
 	@SerializedName("eventID")
 	@Expose
@@ -65,19 +70,19 @@ public class Event {
 	@Expose
 	private Object eventURLID;
 
-	public void setEndDate(String endDate){
+	public void setEndDate(Date endDate){
 		this.endDate = endDate;
 	}
 
-	public String getEndDate(){
+	public Date getEndDate(){
 		return endDate;
 	}
 
-	public void setInitDate(String initDate){
+	public void setInitDate(Date initDate){
 		this.initDate = initDate;
 	}
 
-	public String getInitDate(){
+	public Date getInitDate(){
 		return initDate;
 	}
 
@@ -184,4 +189,64 @@ public class Event {
 	public Object getEventURLID(){
 		return eventURLID;
 	}
+
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeLong(this.endDate != null ? this.endDate.getTime() : -1);
+		dest.writeLong(this.initDate != null ? this.initDate.getTime() : -1);
+		dest.writeInt(this.eventID);
+		dest.writeString(this.eventUID);
+		dest.writeParcelable((Parcelable) this.ticketMaster, flags);
+		dest.writeString(this.description);
+		dest.writeInt(this.attendings);
+		dest.writeString(this.placeLng);
+		dest.writeString(this.placeLat);
+		dest.writeInt(this.venueID);
+		dest.writeString(this.imageURL);
+		dest.writeInt(this.eventtypeID);
+		dest.writeString(this.eventName);
+		dest.writeParcelable((Parcelable) this.ranking, flags);
+		dest.writeParcelable((Parcelable) this.eventURLID, flags);
+	}
+
+	public Event() {
+	}
+
+	protected Event(Parcel in) {
+		long tmpEndDate = in.readLong();
+		this.endDate = tmpEndDate == -1 ? null : new Date(tmpEndDate);
+		long tmpInitDate = in.readLong();
+		this.initDate = tmpInitDate == -1 ? null : new Date(tmpInitDate);
+		this.eventID = in.readInt();
+		this.eventUID = in.readString();
+		this.ticketMaster = in.readParcelable(Object.class.getClassLoader());
+		this.description = in.readString();
+		this.attendings = in.readInt();
+		this.placeLng = in.readString();
+		this.placeLat = in.readString();
+		this.venueID = in.readInt();
+		this.imageURL = in.readString();
+		this.eventtypeID = in.readInt();
+		this.eventName = in.readString();
+		this.ranking = in.readParcelable(Object.class.getClassLoader());
+		this.eventURLID = in.readParcelable(Object.class.getClassLoader());
+	}
+
+	public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+		@Override
+		public Event createFromParcel(Parcel source) {
+			return new Event(source);
+		}
+
+		@Override
+		public Event[] newArray(int size) {
+			return new Event[size];
+		}
+	};
 }

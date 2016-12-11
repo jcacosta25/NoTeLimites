@@ -1,7 +1,6 @@
 package com.burocreativo.notelimites.screens.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +8,12 @@ import android.view.ViewGroup;
 
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.io.models.events.Event;
-import com.burocreativo.notelimites.screens.page.PageEventActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+
+import de.morrox.fontinator.FontTextView;
 
 /**
  * Created by Juan C. Acosta on 9/3/2016.
@@ -31,19 +33,18 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_list_event, parent, false);
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(context, PageEventActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(i);
-            }
-        });
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(eventList.get(position).getInitDate());
+        holder.day.setText(String.valueOf(cal.get(Calendar.DAY_OF_MONTH)));
+        holder.month.setText(new SimpleDateFormat("MMM").format(cal.getTime()));
+        holder.name.setText(eventList.get(position).getEventName());
+        holder.place.setText(eventList.get(position).getPlaceLng());
+        holder.attendants.setText(String.valueOf(eventList.get(position).getAttendings()));
     }
 
     @Override
@@ -51,10 +52,16 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         return eventList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
 
-        public ViewHolder(View itemView) {
-            super(itemView);
+        FontTextView day,month,name,place,attendants;
+        ViewHolder(View item) {
+            super(item);
+            day  = (FontTextView) item.findViewById(R.id.event_day_txt);
+            month = (FontTextView) item.findViewById(R.id.event_month_txt);
+            name = (FontTextView) item.findViewById(R.id.event_name_txt);
+            place = (FontTextView) item.findViewById(R.id.event_place_txt);
+            attendants = (FontTextView) item.findViewById(R.id.event_people_attendants);
         }
     }
 }
