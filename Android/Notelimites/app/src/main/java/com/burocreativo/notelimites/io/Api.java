@@ -20,13 +20,13 @@ import retrofit2.http.Query;
  */
 public interface Api {
 
-    @GET("/sign_in")
+    @GET("sign_in")
     Call<SignInResult> signin(@Query("email") String email, @Query("password") String password);
 
     @Headers("Content-Type: application/json")
-    @POST("/locations")
-    Call<EventsList> getEventLocations(@Query("auth_token") String token, @Body Location locations);
+    @POST("locations/")
+    Call<EventsList> getEventLocations(@Body Location locations);
 
-    @GET("/events/{eventid}")
+    @GET("events/{eventid}")
     Call<Event> getEvent(@Path("eventid") String eventid);
 }

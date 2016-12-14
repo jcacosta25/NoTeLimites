@@ -101,8 +101,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         JsonObject obj = new JsonObject();
         obj.addProperty("lat","25.654117");
         obj.addProperty("lng","-100.3601405");
-        Call<EventsList> call = ServiceGenerator.getApiService().getEventLocations(ServiceGenerator.authToken,new Location("25.654117","-100.3601405"));
-        call.enqueue(new Callback<EventsList>() {
+        Location location = new Location(ServiceGenerator.authToken,"25.6","-100.3");
+        Callback<EventsList> callback = new Callback<EventsList>() {
             @Override
             public void onResponse(Call<EventsList> call, Response<EventsList> response) {
                 if(response.isSuccessful()) {
@@ -116,7 +116,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onFailure(Call<EventsList> call, Throwable t) {
 
             }
-        });
+        };
+        Call<EventsList> call = ServiceGenerator.getApiService().getEventLocations(location);
+        call.enqueue(callback);
+
 
     }
 
