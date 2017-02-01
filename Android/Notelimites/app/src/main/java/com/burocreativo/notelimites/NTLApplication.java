@@ -4,14 +4,15 @@ import android.app.Application;
 
 import com.burocreativo.notelimites.io.ServiceGenerator;
 import com.facebook.FacebookSdk;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 /**
  * Created by Juan C. Acosta on 8/22/2016.
- * bbxmstudios
  * juan.acosta@bbxmstudios.com
  */
 public class NTLApplication  extends Application{
 
+    public static GoogleApiClient googleApiClient;
     @Override
     public void onCreate() {
         super.onCreate();

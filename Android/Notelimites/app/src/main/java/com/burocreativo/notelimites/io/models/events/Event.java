@@ -1,5 +1,7 @@
 package com.burocreativo.notelimites.io.models.events;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,245 +10,274 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class Event implements Parcelable {
+public class Event extends BaseObservable implements Parcelable {
 
-	@SerializedName("end_date")
-	@Expose
-	private Date endDate;
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel source) {
+            return new Event(source);
+        }
 
-	@SerializedName("init_date")
-	@Expose
-	private Date initDate;
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
+    @SerializedName("end_date")
+    @Expose
+    @Bindable
+    private Date endDate;
+    @SerializedName("venueName")
+    @Expose
+    @Bindable
+    private String venueName;
+    @SerializedName("init_date")
+    @Expose
+    @Bindable
+    private Date initDate;
+    @SerializedName("eventID")
+    @Expose
+    @Bindable
+    private int eventID;
+    @SerializedName("eventUID")
+    @Expose
+    @Bindable
+    private String eventUID;
+    @SerializedName("ticketMaster")
+    @Expose
+    @Bindable
+    private Object ticketMaster;
+    @SerializedName("description")
+    @Expose
+    @Bindable
+    private String description;
+    @SerializedName("attendings")
+    @Expose
+    @Bindable
+    private int attendings;
+    @SerializedName("placeLng")
+    @Expose
+    @Bindable
+    private String placeLng;
+    @SerializedName("placeLat")
+    @Expose
+    @Bindable
+    private String placeLat;
+    @SerializedName("venueID")
+    @Expose
+    @Bindable
+    private int venueID;
+    @SerializedName("imageURL")
+    @Expose
+    @Bindable
+    private String imageURL;
+    @SerializedName("eventtypeID")
+    @Expose
+    @Bindable
+    private int eventtypeID;
+    @SerializedName("eventName")
+    @Expose
+    @Bindable
+    private String eventName;
+    @SerializedName("ranking")
+    @Expose
+    @Bindable
+    private Object ranking;
+    @SerializedName("eventURLID")
+    @Expose
+    @Bindable
+    private Object eventURLID;
 
-	@SerializedName("eventID")
-	@Expose
-	private int eventID;
+    public Event() {
+    }
 
-	@SerializedName("eventUID")
-	@Expose
-	private String eventUID;
+    private Event(Parcel in) {
+        long tmpEndDate = in.readLong();
+        this.endDate = tmpEndDate == -1 ? null : new Date(tmpEndDate);
+        long tmpInitDate = in.readLong();
+        this.initDate = tmpInitDate == -1 ? null : new Date(tmpInitDate);
+        this.eventID = in.readInt();
+        this.venueName = in.readString();
+        this.eventUID = in.readString();
+        this.ticketMaster = in.readParcelable(Object.class.getClassLoader());
+        this.description = in.readString();
+        this.attendings = in.readInt();
+        this.placeLng = in.readString();
+        this.placeLat = in.readString();
+        this.venueID = in.readInt();
+        this.imageURL = in.readString();
+        this.eventtypeID = in.readInt();
+        this.eventName = in.readString();
+        this.ranking = in.readParcelable(Object.class.getClassLoader());
+        this.eventURLID = in.readParcelable(Object.class.getClassLoader());
+    }
 
-	@SerializedName("ticketMaster")
-	@Expose
-	private Object ticketMaster;
+    public String getVenueName() {
+        return venueName;
+    }
 
-	@SerializedName("description")
-	@Expose
-	private String description;
+    public void setVenueName(String venueName) {
+        this.venueName = venueName;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.venueName);
+    }
 
-	@SerializedName("attendings")
-	@Expose
-	private int attendings;
+    public Date getEndDate() {
+        return endDate;
+    }
 
-	@SerializedName("placeLng")
-	@Expose
-	private String placeLng;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.endDate);
+    }
 
-	@SerializedName("placeLat")
-	@Expose
-	private String placeLat;
+    public Date getInitDate() {
+        return initDate;
+    }
 
-	@SerializedName("venueID")
-	@Expose
-	private int venueID;
+    public void setInitDate(Date initDate) {
+        this.initDate = initDate;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.initDate);
+    }
 
-	@SerializedName("imageURL")
-	@Expose
-	private String imageURL;
+    public int getEventID() {
+        return eventID;
+    }
 
-	@SerializedName("eventtypeID")
-	@Expose
-	private int eventtypeID;
+    public void setEventID(int eventID) {
+        this.eventID = eventID;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.eventID);
+    }
 
-	@SerializedName("eventName")
-	@Expose
-	private String eventName;
+    public String getEventUID() {
+        return eventUID;
+    }
 
-	@SerializedName("ranking")
-	@Expose
-	private Object ranking;
+    public void setEventUID(String eventUID) {
+        this.eventUID = eventUID;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.eventUID);
+    }
 
-	@SerializedName("eventURLID")
-	@Expose
-	private Object eventURLID;
+    public Object getTicketMaster() {
+        return ticketMaster;
+    }
 
-	public void setEndDate(Date endDate){
-		this.endDate = endDate;
-	}
+    public void setTicketMaster(Object ticketMaster) {
+        this.ticketMaster = ticketMaster;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.ticketMaster);
+    }
 
-	public Date getEndDate(){
-		return endDate;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setInitDate(Date initDate){
-		this.initDate = initDate;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.description);
+    }
 
-	public Date getInitDate(){
-		return initDate;
-	}
+    public int getAttendings() {
+        return attendings;
+    }
 
-	public void setEventID(int eventID){
-		this.eventID = eventID;
-	}
+    public void setAttendings(int attendings) {
+        this.attendings = attendings;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.attendings);
+    }
 
-	public int getEventID(){
-		return eventID;
-	}
+    public String getPlaceLng() {
+        return placeLng;
+    }
 
-	public void setEventUID(String eventUID){
-		this.eventUID = eventUID;
-	}
+    public void setPlaceLng(String placeLng) {
+        this.placeLng = placeLng;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.placeLng);
+    }
 
-	public String getEventUID(){
-		return eventUID;
-	}
+    public String getPlaceLat() {
+        return placeLat;
+    }
 
-	public void setTicketMaster(Object ticketMaster){
-		this.ticketMaster = ticketMaster;
-	}
+    public void setPlaceLat(String placeLat) {
+        this.placeLat = placeLat;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.placeLat);
+    }
 
-	public Object getTicketMaster(){
-		return ticketMaster;
-	}
+    public int getVenueID() {
+        return venueID;
+    }
 
-	public void setDescription(String description){
-		this.description = description;
-	}
+    public void setVenueID(int venueID) {
+        this.venueID = venueID;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.venueID);
+    }
 
-	public String getDescription(){
-		return description;
-	}
+    public String getImageURL() {
+        return imageURL;
+    }
 
-	public void setAttendings(int attendings){
-		this.attendings = attendings;
-	}
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.imageURL);
+    }
 
-	public int getAttendings(){
-		return attendings;
-	}
+    public int getEventtypeID() {
+        return eventtypeID;
+    }
 
-	public void setPlaceLng(String placeLng){
-		this.placeLng = placeLng;
-	}
+    public void setEventtypeID(int eventtypeID) {
+        this.eventtypeID = eventtypeID;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.eventtypeID);
+    }
 
-	public String getPlaceLng(){
-		return placeLng;
-	}
+    public String getEventName() {
+        return eventName;
+    }
 
-	public void setPlaceLat(String placeLat){
-		this.placeLat = placeLat;
-	}
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.eventName);
+    }
 
-	public String getPlaceLat(){
-		return placeLat;
-	}
+    public Object getRanking() {
+        return ranking;
+    }
 
-	public void setVenueID(int venueID){
-		this.venueID = venueID;
-	}
+    public void setRanking(Object ranking) {
+        this.ranking = ranking;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.ranking);
+    }
 
-	public int getVenueID(){
-		return venueID;
-	}
+    public Object getEventURLID() {
+        return eventURLID;
+    }
 
-	public void setImageURL(String imageURL){
-		this.imageURL = imageURL;
-	}
+    public void setEventURLID(Object eventURLID) {
+        this.eventURLID = eventURLID;
+        notifyPropertyChanged(com.burocreativo.notelimites.BR.eventURLID);
+    }
 
-	public String getImageURL(){
-		return imageURL;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	public void setEventtypeID(int eventtypeID){
-		this.eventtypeID = eventtypeID;
-	}
-
-	public int getEventtypeID(){
-		return eventtypeID;
-	}
-
-	public void setEventName(String eventName){
-		this.eventName = eventName;
-	}
-
-	public String getEventName(){
-		return eventName;
-	}
-
-	public void setRanking(Object ranking){
-		this.ranking = ranking;
-	}
-
-	public Object getRanking(){
-		return ranking;
-	}
-
-	public void setEventURLID(Object eventURLID){
-		this.eventURLID = eventURLID;
-	}
-
-	public Object getEventURLID(){
-		return eventURLID;
-	}
-
-
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeLong(this.endDate != null ? this.endDate.getTime() : -1);
-		dest.writeLong(this.initDate != null ? this.initDate.getTime() : -1);
-		dest.writeInt(this.eventID);
-		dest.writeString(this.eventUID);
-		dest.writeParcelable((Parcelable) this.ticketMaster, flags);
-		dest.writeString(this.description);
-		dest.writeInt(this.attendings);
-		dest.writeString(this.placeLng);
-		dest.writeString(this.placeLat);
-		dest.writeInt(this.venueID);
-		dest.writeString(this.imageURL);
-		dest.writeInt(this.eventtypeID);
-		dest.writeString(this.eventName);
-		dest.writeParcelable((Parcelable) this.ranking, flags);
-		dest.writeParcelable((Parcelable) this.eventURLID, flags);
-	}
-
-	public Event() {
-	}
-
-	protected Event(Parcel in) {
-		long tmpEndDate = in.readLong();
-		this.endDate = tmpEndDate == -1 ? null : new Date(tmpEndDate);
-		long tmpInitDate = in.readLong();
-		this.initDate = tmpInitDate == -1 ? null : new Date(tmpInitDate);
-		this.eventID = in.readInt();
-		this.eventUID = in.readString();
-		this.ticketMaster = in.readParcelable(Object.class.getClassLoader());
-		this.description = in.readString();
-		this.attendings = in.readInt();
-		this.placeLng = in.readString();
-		this.placeLat = in.readString();
-		this.venueID = in.readInt();
-		this.imageURL = in.readString();
-		this.eventtypeID = in.readInt();
-		this.eventName = in.readString();
-		this.ranking = in.readParcelable(Object.class.getClassLoader());
-		this.eventURLID = in.readParcelable(Object.class.getClassLoader());
-	}
-
-	public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
-		@Override
-		public Event createFromParcel(Parcel source) {
-			return new Event(source);
-		}
-
-		@Override
-		public Event[] newArray(int size) {
-			return new Event[size];
-		}
-	};
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.endDate != null ? this.endDate.getTime() : -1);
+        dest.writeLong(this.initDate != null ? this.initDate.getTime() : -1);
+        dest.writeInt(this.eventID);
+        dest.writeString(this.venueName);
+        dest.writeString(this.eventUID);
+        dest.writeParcelable((Parcelable) this.ticketMaster, flags);
+        dest.writeString(this.description);
+        dest.writeInt(this.attendings);
+        dest.writeString(this.placeLng);
+        dest.writeString(this.placeLat);
+        dest.writeInt(this.venueID);
+        dest.writeString(this.imageURL);
+        dest.writeInt(this.eventtypeID);
+        dest.writeString(this.eventName);
+        dest.writeParcelable((Parcelable) this.ranking, flags);
+        dest.writeParcelable((Parcelable) this.eventURLID, flags);
+    }
 }

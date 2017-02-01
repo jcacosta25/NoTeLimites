@@ -1,191 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".page.PagePlaceActivity">
+<layout>
 
-    <android.support.design.widget.AppBarLayout
+    <data>
+
+        <import type="com.burocreativo.notelimites.screens.DataBinder" />
+
+        <variable
+            name="event"
+            type="com.burocreativo.notelimites.io.models.events.Event" />
+    </data>
+
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="225dp"
-            android:background="@drawable/simple_plan">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@android:color/transparent"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="16dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <de.morrox.fontinator.FontTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="bottom"
-                        android:text="Simple Plan"
-                        app:font="MyriandPro-Regular.otf"
-                        android:textColor="@android:color/white"
-                        android:textSize="30sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <de.morrox.fontinator.FontTextView
-                            android:text="24 Septiembre 2016"
-                            android:gravity="center"
-                            app:font="MyriandPro-lt.otf"
-                            android:drawableLeft="@drawable/ic_date"
-                            android:textColor="@color/tab_selected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                        
-                        <de.morrox.fontinator.FontTextView
-                            android:layout_marginLeft="4dp"
-                            android:drawableLeft="@drawable/ic_time"
-                            android:textColor="@color/tab_selected"
-                            android:text="20:00 hrs"
-                            android:gravity="center"
-                            app:font="MyriandPro-lt.otf"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
+                android:layout_height="wrap_content">
 
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                    android:layout_height="225dp">
 
-                    <ImageButton
-                        android:layout_width="wrap_content"
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        app:imageLoader="@{event.imageURL}" />
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@android:color/transparent"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="24dp"
-                        android:background="@drawable/btn_like_event" />
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="16dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                        android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <de.morrox.fontinator.FontTextView
+                            android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="bottom"
+                                android:text="@{event.eventName}"
+                                android:textColor="@android:color/white"
+                                android:textSize="30sp"
+                                android:textStyle="bold"
+                                app:font="myriadpro_regular.otf" />
+
+                            <LinearLayout
+                            android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <de.morrox.fontinator.FontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:drawableLeft="@drawable/ic_date"
+                                    android:drawableStart="@drawable/ic_date"
+                                    android:gravity="center"
+                                    android:text="@{event.initDate != null ? DataBinder.formatDate(event.initDate): event.eventName}"
+                                    android:textColor="@color/tab_selected"
+                                    app:font="myriadpro_lt.otf" />
+
+                                <de.morrox.fontinator.FontTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginStart="16dp"
+                                    android:drawableLeft="@drawable/ic_time"
+                                    android:drawableStart="@drawable/ic_time"
+                                    android:gravity="center"
+                                    android:text="@{DataBinder.formatHour(event.initDate)}"
+                                    android:textColor="@color/tab_selected"
+                                    app:font="myriadpro_regular.otf" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                        <RelativeLayout
+                        android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_marginTop="24dp"
+                                android:background="@drawable/btn_like_event" />
+                        </RelativeLayout>
+                    </LinearLayout>
                 </RelativeLayout>
+            </android.support.design.widget.AppBarLayout>
+
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <de.morrox.fontinator.FontTextView
+                    android:id="@+id/page_place_location_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_location"
+                    android:drawableStart="@drawable/ic_location"
+                    android:padding="16dp"
+                    android:text="@{event.venueName}"
+                    app:font="myriadpro_lt.otf" />
+
+                <de.morrox.fontinator.FontTextView
+                    android:id="@+id/fontTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_person"
+                    android:drawableStart="@drawable/ic_person"
+                    android:text="@{Integer.toString(event.attendings)}"
+                    app:font="myriadpro_lt.otf" />
             </LinearLayout>
-        </RelativeLayout>
-    </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <de.morrox.fontinator.FontTextView
-            android:id="@+id/page_place_location_txt"
-            android:layout_weight="1"
-            app:font="MyriandPro-lt.otf"
+
+            <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_location"
-            android:padding="16dp"
-            android:text="Arena Monterrey" />
-
-        <de.morrox.fontinator.FontTextView
-            android:layout_weight="1"
-            app:font="MyriandPro-lt.otf"
-            android:text="292 personas asistiran"
-            android:drawableLeft="@drawable/ic_person"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <de.morrox.fontinator.FontTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Simple Plan"
-            app:font="MyriandPro-Regular.otf"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <de.morrox.fontinator.FontTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Fortis turpis etiam reperires hydra est.Deuss congregabo in velox mare!Cum pulchritudine assimilant, omnes abactores visum neuter, domesticus orgiaes."
-            android:textSize="14sp" />
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <Button
-                android:layout_width="wrap_content"
+            <de.morrox.fontinator.FontTextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_favorite_border"
-                android:text="Favoritos" />
+                android:text="@{event.eventName}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:font="myriadpro_regular.otf" />
 
-            <Button
-                android:layout_width="wrap_content"
+            <de.morrox.fontinator.FontTextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_share"
-                android:text="Compartir" />
+                android:layout_marginTop="8dp"
+                android:text="@{event.description}"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_favorite_border"
+                    android:drawableStart="@drawable/ic_favorite_border"
+                    android:text="Favoritos" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_share"
+                    android:drawableStart="@drawable/ic_share"
+                    android:text="Compartir" />
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:background="@drawable/back_inicio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <de.morrox.fontinator.FontTextView
-            app:font="MyriandPro-lt.otf"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="16dp"
-            android:textColor="@color/tab_selected"
-            android:text="Otros eventos de musica"
-            android:textSize="14sp"
+            <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/back_inicio"
+                android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/moreEventPlaceList"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-</LinearLayout>
+                <de.morrox.fontinator.FontTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/otros_eventos_de_musica"
+                    android:textColor="@color/tab_selected"
+                    android:textSize="14sp"
+                    app:font="myriadpro_lt.otf" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/moreEventPlaceList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</layout>

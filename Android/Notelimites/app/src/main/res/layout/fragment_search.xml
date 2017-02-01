@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/view"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/back_inicio"
     android:orientation="vertical">
 
     <ImageView
         android:layout_width="290dp"
-        android:background="@drawable/logo"
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:layout_margin="64dp"
-        />
+        android:background="@drawable/logo"
+        android:contentDescription="@string/app_name" />
 
-    <EditText
-        android:layout_gravity="center"
-        android:padding="8dp"
-        android:background="@drawable/search_back"
-        android:drawableLeft="@android:drawable/ic_menu_search"
+    <android.support.v7.widget.SearchView
+        android:id="@+id/search_city"
         android:layout_width="240dp"
-        android:layout_height="45dp" />
-    
-    <de.morrox.fontinator.FontTextView
-        android:layout_margin="64dp"
+        android:layout_height="45dp"
         android:layout_gravity="center"
+        android:background="@drawable/search_back"
+        android:padding="8dp" />
+
+    <de.morrox.fontinator.FontTextView
         android:layout_width="260dp"
         android:layout_height="wrap_content"
-        app:font="MyriandPro-lt.otf"
-        android:textColor="@android:color/white"
+        android:layout_gravity="center"
+        android:layout_margin="64dp"
         android:gravity="center"
+        android:text="@string/usaremos_tu_ubicacion_para_mostrarte_los_mejores_eventos_cercanos"
+        android:textColor="@android:color/white"
         android:textSize="14sp"
-        android:text="Usaremos tu ubicacion para mostrarte los mejores eventos cercanos"
+        app:font="MyriandPro-lt.otf"
         />
 
     <Button
-        android:id="@+id/search_button"
+        android:id="@+id/btn_find_location"
         android:layout_width="240dp"
         android:layout_height="45dp"
-        android:text="Encontrar Ubicacion"
         android:layout_gravity="center"
-        android:textColor="@android:color/white"
         android:background="@color/colorAccent"
+        android:text="@string/encontrar_ubicacion"
+        android:textColor="@android:color/white"
         />
 
     <de.morrox.fontinator.FontTextView
-        android:layout_weight="1"
-        android:paddingBottom="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:paddingBottom="8dp"
+        android:text="@string/terminos_y_condiciones"
+        android:textColor="@android:color/darker_gray"
         android:textSize="12sp"
         app:font="MyriandPro-lt.otf"
-        android:textColor="@android:color/darker_gray"
-        android:gravity="bottom|center"
-        android:text="Terminos y condiciones"
         />
 
 </LinearLayout>

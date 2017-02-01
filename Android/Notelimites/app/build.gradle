@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.burocreativo.notelimites"
         minSdkVersion 16
@@ -22,6 +22,10 @@ android {
         cruncherEnabled = false
     }
 
+    dataBinding {
+        enabled true;
+    }
+
 }
 
 repositories {
@@ -31,14 +35,18 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'de.morrox.fontinator:Fontinator:1.1.3'
     compile 'com.google.android.gms:play-services:10.0.1'
     compile 'com.facebook.android:facebook-android-sdk:4.+'
-    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:design:25.1.1'
     compile 'com.android.volley:volley:1.0.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'br.com.mauker.materialsearchview:materialsearchview:1.2.0'
+    compile 'com.google.android.gms:play-services-location:10.0.1'
 }
+

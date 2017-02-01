@@ -7,10 +7,11 @@
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/event_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/simple_plan"
         android:scaleType="centerCrop"
+        android:src="@drawable/simple_plan"
         />
 
     <LinearLayout
@@ -26,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -35,31 +37,30 @@
 
                 <de.morrox.fontinator.FontTextView
                     android:id="@+id/event_day_txt"
-                    android:layout_width="40dp"
-                    android:layout_height="25dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="24"
                     android:textColor="@color/colorAccent"
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    app:font="MyriandPro-lt.otf" />
+                    app:font="gothamhtf_black.otf" />
 
                 <de.morrox.fontinator.FontTextView
                     android:id="@+id/event_month_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="16sp"
-                    android:text="Sept."
                     android:textColor="@android:color/white"
-                    app:font="MyriandPro-lt.otf" />
+                    android:textSize="16sp"
+                    app:font="myriadpro_regular.otf" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:orientation="vertical">
 
                 <de.morrox.fontinator.FontTextView
@@ -67,11 +68,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:text="Simple Plan"
                     android:textColor="@android:color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:font="MyriandPro-Regular.otf" />
+                    app:font="gothamhtf_black.otf" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -84,31 +84,33 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_location"
+                        android:drawableStart="@drawable/ic_location"
                         android:text="Arena Monterrey"
                         android:textColor="@android:color/white"
-                        app:font="MyriandPro-lt.otf" />
+                        app:font="myriadpro_regular.otf" />
 
                     <de.morrox.fontinator.FontTextView
                         android:id="@+id/event_people_attendants"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
                         android:drawableLeft="@drawable/ic_person"
                         android:drawableStart="@drawable/ic_person"
-                        android:text=" 292"
                         android:textColor="@android:color/white"
-                        app:font="MyriandPro-lt.otf" />
+                        app:font="myriadpro_regular.otf" />
                 </LinearLayout>
             </LinearLayout>
 
             <RelativeLayout
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="24dp"
                     android:background="@drawable/btn_like_event" />
