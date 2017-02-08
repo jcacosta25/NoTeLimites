@@ -2,27 +2,14 @@ package com.burocreativo.notelimites.io.models.events;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class Event extends BaseObservable implements Parcelable {
+public class Event extends BaseObservable {
 
-    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
-        @Override
-        public Event createFromParcel(Parcel source) {
-            return new Event(source);
-        }
-
-        @Override
-        public Event[] newArray(int size) {
-            return new Event[size];
-        }
-    };
     @SerializedName("end_date")
     @Expose
     @Bindable
@@ -46,7 +33,7 @@ public class Event extends BaseObservable implements Parcelable {
     @SerializedName("ticketMaster")
     @Expose
     @Bindable
-    private Object ticketMaster;
+    private boolean ticketMaster;
     @SerializedName("description")
     @Expose
     @Bindable
@@ -86,31 +73,15 @@ public class Event extends BaseObservable implements Parcelable {
     @SerializedName("eventURLID")
     @Expose
     @Bindable
-    private Object eventURLID;
+    private String eventURLID;
+    @SerializedName("followed")
+    @Expose
+    @Bindable
+    private String followed;
 
     public Event() {
     }
 
-    private Event(Parcel in) {
-        long tmpEndDate = in.readLong();
-        this.endDate = tmpEndDate == -1 ? null : new Date(tmpEndDate);
-        long tmpInitDate = in.readLong();
-        this.initDate = tmpInitDate == -1 ? null : new Date(tmpInitDate);
-        this.eventID = in.readInt();
-        this.venueName = in.readString();
-        this.eventUID = in.readString();
-        this.ticketMaster = in.readParcelable(Object.class.getClassLoader());
-        this.description = in.readString();
-        this.attendings = in.readInt();
-        this.placeLng = in.readString();
-        this.placeLat = in.readString();
-        this.venueID = in.readInt();
-        this.imageURL = in.readString();
-        this.eventtypeID = in.readInt();
-        this.eventName = in.readString();
-        this.ranking = in.readParcelable(Object.class.getClassLoader());
-        this.eventURLID = in.readParcelable(Object.class.getClassLoader());
-    }
 
     public String getVenueName() {
         return venueName;
@@ -157,11 +128,11 @@ public class Event extends BaseObservable implements Parcelable {
         notifyPropertyChanged(com.burocreativo.notelimites.BR.eventUID);
     }
 
-    public Object getTicketMaster() {
+    public boolean getTicketMaster() {
         return ticketMaster;
     }
 
-    public void setTicketMaster(Object ticketMaster) {
+    public void setTicketMaster(boolean ticketMaster) {
         this.ticketMaster = ticketMaster;
         notifyPropertyChanged(com.burocreativo.notelimites.BR.ticketMaster);
     }
@@ -247,37 +218,13 @@ public class Event extends BaseObservable implements Parcelable {
         notifyPropertyChanged(com.burocreativo.notelimites.BR.ranking);
     }
 
-    public Object getEventURLID() {
+    public String getEventURLID() {
         return eventURLID;
     }
 
-    public void setEventURLID(Object eventURLID) {
+    public void setEventURLID(String eventURLID) {
         this.eventURLID = eventURLID;
         notifyPropertyChanged(com.burocreativo.notelimites.BR.eventURLID);
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.endDate != null ? this.endDate.getTime() : -1);
-        dest.writeLong(this.initDate != null ? this.initDate.getTime() : -1);
-        dest.writeInt(this.eventID);
-        dest.writeString(this.venueName);
-        dest.writeString(this.eventUID);
-        dest.writeParcelable((Parcelable) this.ticketMaster, flags);
-        dest.writeString(this.description);
-        dest.writeInt(this.attendings);
-        dest.writeString(this.placeLng);
-        dest.writeString(this.placeLat);
-        dest.writeInt(this.venueID);
-        dest.writeString(this.imageURL);
-        dest.writeInt(this.eventtypeID);
-        dest.writeString(this.eventName);
-        dest.writeParcelable((Parcelable) this.ranking, flags);
-        dest.writeParcelable((Parcelable) this.eventURLID, flags);
-    }
 }

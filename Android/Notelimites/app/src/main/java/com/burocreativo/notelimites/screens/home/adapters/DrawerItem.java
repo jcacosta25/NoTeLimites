@@ -2,8 +2,7 @@ package com.burocreativo.notelimites.screens.home.adapters;
 
 /**
  * Created by Juan C. Acosta on 9/3/2016.
- * bbxmstudios
- * juan.acosta@bbxmstudios.com
+ * juancacosta25@gmail.com.com
  */
 public class DrawerItem {
     private String name;

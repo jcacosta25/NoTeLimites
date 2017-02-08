@@ -5,8 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Juan C. Acosta on 10/25/2016.
- * bbxmstudios
- * juan.acosta@bbxmstudios.com
+ * juank2acosta@gmail.com
  */
 public class ServiceGenerator {
     private static  Api API_SERVICE;

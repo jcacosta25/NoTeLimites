@@ -2,8 +2,7 @@ package com.burocreativo.notelimites.io.models;
 
 /**
  * Created by Juan C. Acosta on 9/4/2016.
- * bbxmstudios
- * juan.acosta@bbxmstudios.com
+ * juancacosta25@gmail.com.com
  */
 public class Page {
     private String id;

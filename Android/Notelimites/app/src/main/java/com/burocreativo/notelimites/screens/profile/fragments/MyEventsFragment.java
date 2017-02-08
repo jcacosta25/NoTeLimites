@@ -16,8 +16,8 @@ import java.util.List;
 
 /**
  * Created by Juan C. Acosta on 9/3/2016.
- * bbxmstudios
- * juan.acosta@bbxmstudios.com
+
+ * juancacosta25@gmail.com.com
  */
 public class MyEventsFragment extends Fragment{
 

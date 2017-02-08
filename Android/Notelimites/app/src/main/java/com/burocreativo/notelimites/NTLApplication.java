@@ -8,7 +8,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 /**
  * Created by Juan C. Acosta on 8/22/2016.
- * juan.acosta@bbxmstudios.com
+ * juancacosta25@gmail.com.com
  */
 public class NTLApplication  extends Application{
 

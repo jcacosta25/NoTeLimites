@@ -13,8 +13,7 @@ import java.util.List;
 
 /**
  * Created by Juan C. Acosta on 9/4/2016.
- * bbxmstudios
- * juan.acosta@bbxmstudios.com
+ * juancacosta25@gmail.com.com
  */
 public class PageListAdapter extends RecyclerView.Adapter<PageListAdapter.ViewHolder> {
     private List<Page> pageList;
