@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.burocreativo.notelimites.R;
-import com.burocreativo.notelimites.screens.adapters.PageListAdapter;
 import com.burocreativo.notelimites.io.models.Page;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class PagePlaceActivity extends AppCompatActivity {
         for (int i = 0; i < 4 ; i++) {
             events.add(new Page());
         }
-        eventList.setAdapter(new PageListAdapter(events,getApplicationContext()));
+        //eventList.setAdapter(new PageListAdapter(events,getApplicationContext()));
         eventList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         eventList.setHasFixedSize(true);
     }

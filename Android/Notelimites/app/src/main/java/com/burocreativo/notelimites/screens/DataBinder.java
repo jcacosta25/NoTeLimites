@@ -81,4 +81,8 @@ public class DataBinder {
             return null;
         }
     }
+
+    public static String formatInt(final int i){
+        return String.valueOf(i);
+    }
 }

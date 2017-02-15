@@ -40,5 +40,5 @@
     <string name="usaremos_tu_ubicacion_para_mostrarte_los_mejores_eventos_cercanos">Usaremos tu ubicacion para mostrarte los mejores eventos cercanos</string>
     <string name="encontrar_ubicacion">Encontrar Ubicacion</string>
     <string name="terminos_y_condiciones">Terminos y condiciones</string>
-    <string name="otros_eventos_de_musica">Otros eventos de musica</string>
+    <string name="otros_eventos_de_musica">Otros eventos Relacionados:  </string>
 </resources>

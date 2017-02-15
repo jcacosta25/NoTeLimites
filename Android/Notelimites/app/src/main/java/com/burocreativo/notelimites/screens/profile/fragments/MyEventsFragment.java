@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.burocreativo.notelimites.R;
-import com.burocreativo.notelimites.io.models.Event;
+import com.burocreativo.notelimites.io.models.events.Event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class MyEventsFragment extends Fragment{
 
     private void startRecyclerView() {
         for (int i = 0; i < 4 ; i++) {
-            events.add(new Event());
+            //events.add(new Event());
         }
         //EventListAdapter ea = new EventListAdapter(events,getContext());
         //myEventRecycler.clearOnChildAttachStateChangeListeners();

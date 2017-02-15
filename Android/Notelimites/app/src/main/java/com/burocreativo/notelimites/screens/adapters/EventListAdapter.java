@@ -1,27 +1,24 @@
 package com.burocreativo.notelimites.screens.adapters;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.annimon.stream.Stream;
+import com.burocreativo.notelimites.BR;
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.io.models.events.Event;
 import com.burocreativo.notelimites.screens.page.PageEventActivity;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-
-import de.morrox.fontinator.FontTextView;
 
 /**
  * Created by Juan C. Acosta on 9/3/2016.
@@ -41,37 +38,24 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_list_event, parent, false);
-        return new ViewHolder(v);
+        ViewDataBinding binding;
+        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.element_list_event,parent,false);
+        return  new ViewHolder(binding);
     }
 
     @SuppressLint("SimpleDateFormat")
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(filterList.get(position).getInitDate());
-        holder.day.setText(String.valueOf(cal.get(Calendar.DAY_OF_MONTH)));
-        holder.month.setText(new SimpleDateFormat("MMM").format(cal.getTime()));
-        holder.name.setText(eventList.get(position).getEventName());
-        holder.place.setText(filterList.get(position).getVenueName());
-        holder.attendants.setText(String.valueOf(filterList.get(position).getAttendings()));
-        Glide.with(context)
-                .load(filterList.get(position).getImageURL())
-                .asBitmap()
-                .fitCenter()
-                .placeholder(R.drawable.placeholder)
-                .into(holder.background);
-        holder.item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, PageEventActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("EventId", String.valueOf(filterList.get(position).getEventID()));
-                context.startActivity(intent);
-            }
+
+        Event event = filterList.get(position);
+        ViewDataBinding binding = holder.getBind();
+        binding.setVariable(BR.event,event);
+        holder.bind(event,(event1,view)->{
+            Intent intent = new Intent(context, PageEventActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("EventId", String.valueOf(event.getEventID()));
+            context.startActivity(intent);
         });
-
-
     }
 
     public LatLng getEventLocation(int position) {
@@ -85,50 +69,91 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     }
 
     public void filter(final int cat) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                filterList.clear();
-                if (cat == 2) {
-                    filterList.addAll(eventList);
-                } else {
-                    int category = cat + 1;
-                    if (cat > 2) {
-                        category = cat - 1;
-                    }
-                    for (Event event : eventList) {
-                        if (event.getEventtypeID() == category) {
+        filterList = new ArrayList<>();
+        notifyDataSetChanged();
+        if(cat == 2){
+            filterList.addAll(eventList);
+        } else {
+
+            if(cat>2){
+                Stream.of(eventList)
+                        .filter(event -> event.getEventtypeID() == cat -1)
+                        .forEach(event -> {
                             filterList.add(event);
-                        }
+                            notifyDataSetChanged();
+                        });
+            } else {
+                Stream.of(eventList)
+                        .filter(event -> event.getEventtypeID() == cat +1)
+                        .forEach(event -> {
+                            filterList.add(event);
+                            notifyDataSetChanged();
+                        });
+            }
+
+        }
+       /* filterList.clear();
+        if(cat == 2){
+            filterList.addAll(eventList);
+        } else {
+            Stream.of(eventList)
+                    .filter(event -> {
+                        int category = cat+1;
+                        if(cat > 2)
+                            category = cat -1;
+                        return event.getEventtypeID() == category;
+                    }).forEach(event -> {
+                filterList.add(event);
+                notifyDataSetChanged();
+
+            });
+        }*/
+
+
+
+        /*new Thread(() -> {
+            if (cat == 2) {
+                filterList.addAll(eventList);
+            } else {
+                int category = cat + 1;
+                if (cat > 2) {
+                    category = cat - 1;
+                }
+                for (Event event : eventList) {
+                    if (event.getEventtypeID() == category) {
+                        filterList.add(event);
                     }
                 }
-
-                // Set on UI Thread
-                ((Activity) context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Notify the List that the DataSet has changed...
-                        notifyDataSetChanged();
-                    }
-                });
             }
-        }).start();
+
+            // Set on UI Thread
+            ((Activity) context).runOnUiThread(() -> {
+                // Notify the List that the DataSet has changed...
+                notifyDataSetChanged();
+            });
+        }).start();*/
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        FontTextView day,month,name,place,attendants;
-        ImageView background;
-        View item;
-        ViewHolder(View item) {
-            super(item);
-            day  = (FontTextView) item.findViewById(R.id.event_day_txt);
-            month = (FontTextView) item.findViewById(R.id.event_month_txt);
-            name = (FontTextView) item.findViewById(R.id.event_name_txt);
-            place = (FontTextView) item.findViewById(R.id.event_place_txt);
-            attendants = (FontTextView) item.findViewById(R.id.event_people_attendants);
-            background = (ImageView) item.findViewById(R.id.event_image);
-            this.item = item;
+        private ViewDataBinding bindElement;
+        private View itemView;
+
+        ViewHolder(ViewDataBinding v) {
+            super(v.getRoot());
+            itemView = v.getRoot();
+            bindElement=v;
+            bindElement.executePendingBindings();
         }
+
+        ViewDataBinding getBind() {return bindElement;}
+
+        public void bind(final Event event, final OnItemClickListener listener){
+            itemView.setOnClickListener(view -> listener.onItemClick(event,view));
+        }
+    }
+
+    interface OnItemClickListener{
+        void onItemClick(Event event, View view);
     }
 }

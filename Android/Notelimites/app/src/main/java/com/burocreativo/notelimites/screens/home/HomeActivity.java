@@ -352,6 +352,33 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
+            Intent i = new Intent();
+
+            switch (position){
+                case 0:
+                    break;
+                case 1:
+                    i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse("http://info.notelimites.com/"));
+                    break;
+                case 2:
+                    i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse("http://info.notelimites.com/preguntas-frecuentes/"));
+                    break;
+                case 3:
+                    i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse("http://info.notelimites.com/contacto/"));
+                    break;
+                case 4:
+                    i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse("http://info.notelimites.com/"));
+                    break;
+                case 5:
+                    i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse("http://info.notelimites.com/instituciones-culturales/"));
+                    break;
+            }
+            startActivity(i);
         }
     }
 }

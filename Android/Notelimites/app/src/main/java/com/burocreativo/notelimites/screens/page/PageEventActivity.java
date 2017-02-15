@@ -12,11 +12,10 @@ import android.view.MenuItem;
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.databinding.ActivityPageEventBinding;
 import com.burocreativo.notelimites.io.ServiceGenerator;
-import com.burocreativo.notelimites.io.models.Page;
 import com.burocreativo.notelimites.io.models.events.Event;
+import com.burocreativo.notelimites.io.models.events.VenueEvents;
 import com.burocreativo.notelimites.screens.adapters.PageListAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -46,7 +45,10 @@ public class PageEventActivity extends AppCompatActivity {
         call.enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
-                binding.setEvent(response.body());
+                if(response.isSuccessful()) {
+                    binding.setEvent(response.body());
+                    RecView(response.body().getVenueEvents());
+                }
             }
 
             @Override
@@ -54,16 +56,10 @@ public class PageEventActivity extends AppCompatActivity {
 
             }
         });
-
-        RecView();
     }
 
-    public void RecView(){
-        List<Page> events = new ArrayList<>();
-        for (int i = 0; i < 4 ; i++) {
-            events.add(new Page());
-        }
-        eventList.setAdapter(new PageListAdapter(events,getApplicationContext()));
+    public void RecView(List<VenueEvents> venueEvents){
+        eventList.setAdapter(new PageListAdapter(venueEvents,getApplicationContext()));
         eventList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         eventList.setHasFixedSize(true);
     }

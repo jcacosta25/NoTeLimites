@@ -3,10 +3,12 @@ package com.burocreativo.notelimites.io.models.events;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import com.burocreativo.notelimites.BR;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.List;
 
 public class Event extends BaseObservable {
 
@@ -74,10 +76,15 @@ public class Event extends BaseObservable {
     @Expose
     @Bindable
     private String eventURLID;
+
     @SerializedName("followed")
     @Expose
     @Bindable
     private String followed;
+
+    @SerializedName("venueEvents")
+    @Expose
+    private List<VenueEvents> venueEvents;
 
     public Event() {
     }
@@ -89,7 +96,7 @@ public class Event extends BaseObservable {
 
     public void setVenueName(String venueName) {
         this.venueName = venueName;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.venueName);
+        notifyPropertyChanged(BR.venueName);
     }
 
     public Date getEndDate() {
@@ -98,7 +105,7 @@ public class Event extends BaseObservable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.endDate);
+        notifyPropertyChanged(BR.endDate);
     }
 
     public Date getInitDate() {
@@ -107,7 +114,7 @@ public class Event extends BaseObservable {
 
     public void setInitDate(Date initDate) {
         this.initDate = initDate;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.initDate);
+        notifyPropertyChanged(BR.initDate);
     }
 
     public int getEventID() {
@@ -116,7 +123,7 @@ public class Event extends BaseObservable {
 
     public void setEventID(int eventID) {
         this.eventID = eventID;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.eventID);
+        notifyPropertyChanged(BR.eventID);
     }
 
     public String getEventUID() {
@@ -125,7 +132,7 @@ public class Event extends BaseObservable {
 
     public void setEventUID(String eventUID) {
         this.eventUID = eventUID;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.eventUID);
+        notifyPropertyChanged(BR.eventUID);
     }
 
     public boolean getTicketMaster() {
@@ -134,7 +141,7 @@ public class Event extends BaseObservable {
 
     public void setTicketMaster(boolean ticketMaster) {
         this.ticketMaster = ticketMaster;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.ticketMaster);
+        notifyPropertyChanged(BR.ticketMaster);
     }
 
     public String getDescription() {
@@ -143,7 +150,7 @@ public class Event extends BaseObservable {
 
     public void setDescription(String description) {
         this.description = description;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.description);
+        notifyPropertyChanged(BR.description);
     }
 
     public int getAttendings() {
@@ -152,7 +159,7 @@ public class Event extends BaseObservable {
 
     public void setAttendings(int attendings) {
         this.attendings = attendings;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.attendings);
+        notifyPropertyChanged(BR.attendings);
     }
 
     public String getPlaceLng() {
@@ -161,7 +168,7 @@ public class Event extends BaseObservable {
 
     public void setPlaceLng(String placeLng) {
         this.placeLng = placeLng;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.placeLng);
+        notifyPropertyChanged(BR.placeLng);
     }
 
     public String getPlaceLat() {
@@ -170,7 +177,7 @@ public class Event extends BaseObservable {
 
     public void setPlaceLat(String placeLat) {
         this.placeLat = placeLat;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.placeLat);
+        notifyPropertyChanged(BR.placeLat);
     }
 
     public int getVenueID() {
@@ -179,7 +186,7 @@ public class Event extends BaseObservable {
 
     public void setVenueID(int venueID) {
         this.venueID = venueID;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.venueID);
+        notifyPropertyChanged(BR.venueID);
     }
 
     public String getImageURL() {
@@ -188,7 +195,7 @@ public class Event extends BaseObservable {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.imageURL);
+        notifyPropertyChanged(BR.imageURL);
     }
 
     public int getEventtypeID() {
@@ -197,7 +204,7 @@ public class Event extends BaseObservable {
 
     public void setEventtypeID(int eventtypeID) {
         this.eventtypeID = eventtypeID;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.eventtypeID);
+        notifyPropertyChanged(BR.eventtypeID);
     }
 
     public String getEventName() {
@@ -206,7 +213,7 @@ public class Event extends BaseObservable {
 
     public void setEventName(String eventName) {
         this.eventName = eventName;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.eventName);
+        notifyPropertyChanged(BR.eventName);
     }
 
     public Object getRanking() {
@@ -215,7 +222,7 @@ public class Event extends BaseObservable {
 
     public void setRanking(Object ranking) {
         this.ranking = ranking;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.ranking);
+        notifyPropertyChanged(BR.ranking);
     }
 
     public String getEventURLID() {
@@ -224,7 +231,24 @@ public class Event extends BaseObservable {
 
     public void setEventURLID(String eventURLID) {
         this.eventURLID = eventURLID;
-        notifyPropertyChanged(com.burocreativo.notelimites.BR.eventURLID);
+        notifyPropertyChanged(BR.eventURLID);
+    }
+
+    public void setFollowed(String followed){
+        this.followed = followed;
+        notifyPropertyChanged(BR.followed);
+    }
+
+    public String getFollowed(){
+        return followed;
+    }
+
+    public void setVenueEvents(List<VenueEvents> venueEvents){
+        this.venueEvents = venueEvents;
+    }
+
+    public List<VenueEvents> getVenueEvents(){
+        return venueEvents;
     }
 
 }
