@@ -6,6 +6,8 @@ import com.burocreativo.notelimites.io.ServiceGenerator;
 import com.facebook.FacebookSdk;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import io.branch.referral.Branch;
+
 /**
  * Created by Juan C. Acosta on 8/22/2016.
  * juancacosta25@gmail.com.com
@@ -19,5 +21,8 @@ public class NTLApplication  extends Application{
         //FacebookSdk.sdkInitialize(getApplicationContext());
         FacebookSdk.sdkInitialize(getApplicationContext());
         ServiceGenerator.authToken = "i2gShFXzWnLF2A7f8_aQ";
+        // initialize the Branch object
+        Branch.getAutoInstance(this);
+
     }
 }

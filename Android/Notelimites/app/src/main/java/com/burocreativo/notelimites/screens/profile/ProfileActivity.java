@@ -13,7 +13,7 @@ import com.burocreativo.notelimites.screens.profile.adapters.ViewPagerAdapter;
 import com.burocreativo.notelimites.screens.profile.fragments.MyEventsFragment;
 import com.burocreativo.notelimites.screens.profile.fragments.MyPlacesFragment;
 
-public class ProfileActivity extends AppCompatActivity {
+public class  ProfileActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;

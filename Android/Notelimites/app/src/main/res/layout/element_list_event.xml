@@ -9,7 +9,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="160dp"
     android:layout_margin="16dp"
     android:orientation="vertical">
 
@@ -102,14 +102,14 @@
 
                     <de.morrox.fontinator.FontTextView
                         android:id="@+id/event_people_attendants"
-                        android:layout_width="wrap_content"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginStart="16dp"
                         android:drawableLeft="@drawable/ic_person"
                         android:drawableStart="@drawable/ic_person"
                         android:textColor="@android:color/white"
-                        android:text="@{event.attendings != null ? DataBinder.formatInt(event.attendings): 0}"
+                        android:text="@{DataBinder.formatInt(event.attendings)}"
                         app:font="myriadpro_regular.otf" />
                 </LinearLayout>
             </LinearLayout>

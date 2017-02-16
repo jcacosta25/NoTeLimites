@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.burocreativo.notelimites.R;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -31,6 +32,7 @@ public class DataBinder {
                 .load(url)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.back_inicio)
                 .fitCenter()
                 .into(image);
     }

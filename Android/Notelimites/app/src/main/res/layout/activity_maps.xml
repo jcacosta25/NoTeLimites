@@ -23,6 +23,7 @@
                     layout="@layout/toolbar" />
 
                 <android.support.v7.widget.SearchView
+                    android:id="@+id/search_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/white" />

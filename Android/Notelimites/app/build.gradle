@@ -30,6 +30,9 @@ android {
         versionName "1.0"
         multiDexEnabled true
     }
+    dexOptions {
+        javaMaxHeapSize "4G"
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -69,6 +72,9 @@ dependencies {
     compile 'br.com.mauker.materialsearchview:materialsearchview:1.2.0'
     compile 'com.google.android.gms:play-services-location:10.0.1'
     compile 'com.annimon:stream:1.1.5'
+    compile ('io.branch.sdk.android:library:2.+') {
+        exclude module: 'answers-shim'
+    }
 
 }
 

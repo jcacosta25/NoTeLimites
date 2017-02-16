@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -18,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,15 +31,19 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.io.ServiceGenerator;
 import com.burocreativo.notelimites.io.models.events.Data;
 import com.burocreativo.notelimites.io.models.events.EventsList;
+import com.burocreativo.notelimites.io.models.locations.Locations;
 import com.burocreativo.notelimites.screens.adapters.EventListAdapter;
 import com.burocreativo.notelimites.screens.home.adapters.DrawerItem;
 import com.burocreativo.notelimites.screens.home.adapters.DrawerListAdapter;
+import com.burocreativo.notelimites.screens.page.PageEventActivity;
 import com.burocreativo.notelimites.screens.profile.ProfileActivity;
+import com.burocreativo.notelimites.utils.SearchFeedResultsAdapter;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -50,16 +57,20 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import io.branch.referral.Branch;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
 
     private GoogleMap mMap;
     private RecyclerView eventList;
@@ -73,6 +84,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleApiClient googleApiClient;
     private View currentFocusedLayout, oldFocusedLayout;
     private String cityName;
+    public static String[] columns;
+    SearchView searchView;
+    MatrixCursor cursor;
+    SearchFeedResultsAdapter searchFeedResultsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +140,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
         startDrawer();
+        columns = new String[]{"_id", "LOCATION_NAME", "LOCATION_SLUG", "LOCATION_LAT", "LOCATION_LON"};
+        cursor = new MatrixCursor(columns);
+        searchView = (SearchView) findViewById(R.id.search_city);
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnSuggestionListener(this);
+        searchFeedResultsAdapter = new SearchFeedResultsAdapter(this, R.layout.element_search_adapter, cursor, columns, null, -1000);
+        searchView.setSuggestionsAdapter(searchFeedResultsAdapter);
+        searchView.setQuery(getIntent().getStringExtra("city"),false);
     }
 
 
@@ -317,22 +340,54 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        googleApiClient.connect();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        if (googleApiClient == null) {
+            // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
+            // See https://g.co/AppIndexing/AndroidStudio for more information.
+            googleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .addApi(AppIndex.API).build();
+        }
         googleApiClient.connect();
-        AppIndex.AppIndexApi.start(googleApiClient, getIndexApiAction());
+
+        Branch branch = Branch.getInstance();
+
+        branch.initSession((referringParams, error) -> {
+            if (error == null) {
+                // params are the deep linked params as
+                // sociated with the link that the user clicked -> was re-directed to this app
+                // params will be empty if no data found
+                // ... insert custom logic here ...
+                if(referringParams.has("event")){
+
+                    Intent intent = new Intent(HomeActivity.this, PageEventActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        intent.putExtra("EventId", String.valueOf(referringParams.get("event")));
+                        startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                Log.i("NoTeLimites", error.getMessage());
+            }
+        }, this.getIntent().getData(), this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(googleApiClient, getIndexApiAction());
         googleApiClient.disconnect();
     }
 
@@ -346,6 +401,90 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if (query.length() > 2) {
+            loadLocations(query);
+        }
+        return true;
+    }
+
+    private void loadLocations(final String searchText) {
+        HashMap queryMap = new HashMap();
+        queryMap.put("query", searchText);
+        Call<Locations> call = ServiceGenerator.getApiService().getLocations();
+        call.enqueue(new Callback<Locations>() {
+            @Override
+            public void onResponse(Call<Locations> call, Response<Locations> response) {
+                MatrixCursor matrixCursor = convertToCursor(response.body().getLocations(), searchText);
+                if(matrixCursor != null)
+                    searchFeedResultsAdapter.changeCursor(matrixCursor);
+            }
+
+            @Override
+            public void onFailure(Call<Locations> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private MatrixCursor convertToCursor(List<com.burocreativo.notelimites.io.models.locations.Location> locations, String searchText) {
+        cursor = new MatrixCursor(columns);
+        int i = 0;
+        for (com.burocreativo.notelimites.io.models.locations.Location location : locations) {
+            if (location.getLocationName() != null && location.getLocationName().contains(searchText)) {
+                String[] temp = new String[columns.length];
+                i = i + 1;
+                temp[0] = Integer.toString(i);
+                temp[1] = location.getLocationName();
+                temp[2] = location.getLocationSlug();
+                temp[3] = location.getLocationLat();
+                temp[4] = location.getLocationLng();
+                cursor.addRow(temp);
+            }
+        }
+
+        return cursor;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (newText.length() > 2) {
+            loadLocations(newText);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onSuggestionSelect(int position) {
+        Cursor cursor = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
+        String feedName = cursor.getString(1);
+        searchView.setQuery(feedName, true);
+        if (cursor.getString(3) == null && cursor.getString(4) == null) {
+            Toast.makeText(HomeActivity.this, "No se puede encontrar este lugar", Toast.LENGTH_SHORT).show();
+        } else {
+            RecView(Double.parseDouble(cursor.getString(3)),Double.parseDouble(cursor.getString(4)));
+            searchView.setQuery(feedName,false);
+            searchView.clearFocus();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onSuggestionClick(int position) {
+        Cursor cursor = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
+        String feedName = cursor.getString(1);
+        if (cursor.getString(3) == null && cursor.getString(4) == null) {
+            Toast.makeText(HomeActivity.this, "No se puede encontrar este lugar", Toast.LENGTH_SHORT).show();
+        } else {
+            RecView(Double.parseDouble(cursor.getString(3)),Double.parseDouble(cursor.getString(4)));
+            searchView.setQuery(feedName,false);
+            searchView.clearFocus();
+
+        }
+        return true;
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -380,5 +519,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
             startActivity(i);
         }
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        this.setIntent(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        googleApiClient.disconnect();
     }
 }

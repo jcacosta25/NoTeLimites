@@ -50,12 +50,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         searchView.setOnSuggestionListener(this);
         searchFeedResultsAdapter = new SearchFeedResultsAdapter(this, R.layout.element_search_adapter, cursor, columns, null, -1000);
         searchView.setSuggestionsAdapter(searchFeedResultsAdapter);
-        findViewById(R.id.btn_find_location).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPreview(layout);
-            }
-        });
+        findViewById(R.id.btn_find_location).setOnClickListener(view -> showPreview(layout));
     }
 
 
@@ -79,34 +74,22 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     private void requestPermission() {
         Log.i(TAG, "Location permission has NOT been granted. Requesting permission.");
 
-        // BEGIN_INCLUDE(camera_permission_request)
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
-            // Provide an additional rationale to the user if the permission was not granted
-            // and the user would benefit from additional context for the use of the permission.
-            // For example if the user has previously denied the permission.
             Log.i(TAG,
                     "Displaying camera permission rationale to provide additional context.");
             Snackbar.make(layout, R.string.permission_location_rationale,
                     Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.ok, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            ActivityCompat.requestPermissions(SearchActivity.this,
-                                    new String[]{Manifest.permission.CAMERA},
-                                    REQUEST_LOCATION);
-                        }
-                    })
+                    .setAction(R.string.ok, view -> ActivityCompat.requestPermissions(SearchActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            REQUEST_LOCATION))
                     .show();
             Intent intent = new Intent(SearchActivity.this, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         } else {
-
-            // Camera permission has not been granted yet. Request it directly.
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION);
         }
-        // END_INCLUDE(camera_permission_request)
     }
 
     private void loadLocations(final String searchText) {
@@ -174,6 +157,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             intent.putExtra("slug", cursor.getString(2));
             intent.putExtra("lat", cursor.getString(3));
             intent.putExtra("lng", cursor.getString(4));
+            intent.putExtra("city",feedName);
+            searchView.setQuery(feedName,false);
             searchView.clearFocus();
             startActivity(intent);
         }
@@ -191,6 +176,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             intent.putExtra("slug", cursor.getString(2));
             intent.putExtra("lat", cursor.getString(3));
             intent.putExtra("lng", cursor.getString(4));
+            intent.putExtra("city",feedName);
+            searchView.setQuery(feedName,false);
             searchView.clearFocus();
             startActivity(intent);
         }
