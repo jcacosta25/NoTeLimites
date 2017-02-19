@@ -28,8 +28,8 @@
     <string-array name="Category">
         <item>Musica</item>
         <item>Deportes</item>
-        <item>Todos los Eventos</item>
         <item>De noche</item>
+        <item>Todos los Eventos</item>
         <item>Familia</item>
         <item>Cultura</item>
         <item>Otros</item>

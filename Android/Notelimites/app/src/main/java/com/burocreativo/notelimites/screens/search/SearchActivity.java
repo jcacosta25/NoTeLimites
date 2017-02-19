@@ -66,6 +66,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
 
             Intent intent = new Intent(SearchActivity.this, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
+            finish();
         }
 
     }
@@ -161,6 +162,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             searchView.setQuery(feedName,false);
             searchView.clearFocus();
             startActivity(intent);
+            finish();
         }
         return true;
     }
@@ -180,6 +182,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             searchView.setQuery(feedName,false);
             searchView.clearFocus();
             startActivity(intent);
+            finish();
         }
         return true;
     }

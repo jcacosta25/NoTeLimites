@@ -80,7 +80,7 @@ public class Event extends BaseObservable {
     @SerializedName("followed")
     @Expose
     @Bindable
-    private String followed;
+    private boolean followed;
 
     @SerializedName("venueEvents")
     @Expose
@@ -234,12 +234,12 @@ public class Event extends BaseObservable {
         notifyPropertyChanged(BR.eventURLID);
     }
 
-    public void setFollowed(String followed){
+    public void setFollowed(boolean followed){
         this.followed = followed;
         notifyPropertyChanged(BR.followed);
     }
 
-    public String getFollowed(){
+    public boolean getFollowed(){
         return followed;
     }
 

@@ -5,13 +5,13 @@ package com.burocreativo.notelimites.io.models.relationship;
  * juancacosta25@gmail.com
  */
 
-public class follow {
+public class Follow {
 
-    private String followerId;
-    private String followedId;
+    private String follower_id;
+    private String followed_id;
 
-    public follow(String followerId, String followedId) {
-        this.followerId = followerId;
-        this.followedId = followedId;
+    public Follow(String followerId, String followedId) {
+        this.follower_id = followerId;
+        this.followed_id = followedId;
     }
 }

@@ -4,10 +4,16 @@ import com.burocreativo.notelimites.io.models.events.Data;
 import com.burocreativo.notelimites.io.models.events.Event;
 import com.burocreativo.notelimites.io.models.events.EventsList;
 import com.burocreativo.notelimites.io.models.locations.Locations;
+import com.burocreativo.notelimites.io.models.relationship.EventFollowed;
+import com.burocreativo.notelimites.io.models.relationship.Follow;
+import com.burocreativo.notelimites.io.models.relationship.UserFollowedEvent;
 import com.burocreativo.notelimites.io.models.token.SignInResult;
+import com.burocreativo.notelimites.io.models.user.SendUser;
+import com.burocreativo.notelimites.io.models.user.UserResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -24,12 +30,25 @@ public interface Api {
     Call<SignInResult> signin(@Query("email") String email, @Query("password") String password);
 
     @Headers("Content-Type: application/json")
+    @POST("users/?auth_token=i2gShFXzWnLF2A7f8_aQ")
+    Call<UserResponse> setUpUser(@Body SendUser user);
+
+    @Headers("Content-Type: application/json")
     @POST("locations/")
-    Call<EventsList> getEventLocations(@Body Data locations);
+    Call<EventsList> getEventLocations(@Body Data locations,@Query("follower_id") String follower);
 
     @GET("locations/?auth_token=i2gShFXzWnLF2A7f8_aQ")
     Call<Locations> getLocations();
 
     @GET("events/{eventid}")
-    Call<Event> getEvent(@Path("eventid") String eventid, @Query("auth_token") String token);
+    Call<Event> getEvent(@Path("eventid") String eventid, @Query("auth_token") String token,@Query("follower_id") String follower);
+
+    @DELETE("relationevents?auth_token=i2gShFXzWnLF2A7f8_aQ")
+    Call<EventFollowed> unFollowEvent(@Body Follow follow);
+
+    @POST("relationevents?auth_token=i2gShFXzWnLF2A7f8_aQ")
+    Call<EventFollowed> followEvent(@Body Follow follow);
+
+    @GET("relationevents?auth_token=i2gShFXzWnLF2A7f8_aQ")
+    Call<UserFollowedEvent> userFollowedEvents(@Query("follower_id") String follower);
 }

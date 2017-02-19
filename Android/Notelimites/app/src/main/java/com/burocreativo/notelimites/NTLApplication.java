@@ -3,6 +3,7 @@ package com.burocreativo.notelimites;
 import android.app.Application;
 
 import com.burocreativo.notelimites.io.ServiceGenerator;
+import com.burocreativo.notelimites.utils.TinyDB;
 import com.facebook.FacebookSdk;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -15,6 +16,7 @@ import io.branch.referral.Branch;
 public class NTLApplication  extends Application{
 
     public static GoogleApiClient googleApiClient;
+    public static TinyDB tinyDB;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -23,6 +25,7 @@ public class NTLApplication  extends Application{
         ServiceGenerator.authToken = "i2gShFXzWnLF2A7f8_aQ";
         // initialize the Branch object
         Branch.getAutoInstance(this);
+        tinyDB = new TinyDB(this);
 
     }
 }

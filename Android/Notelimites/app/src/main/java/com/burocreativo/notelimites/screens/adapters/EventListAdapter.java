@@ -5,20 +5,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.annimon.stream.Stream;
 import com.burocreativo.notelimites.BR;
+import com.burocreativo.notelimites.NTLApplication;
 import com.burocreativo.notelimites.R;
+import com.burocreativo.notelimites.io.ServiceGenerator;
 import com.burocreativo.notelimites.io.models.events.Event;
+import com.burocreativo.notelimites.io.models.relationship.EventFollowed;
+import com.burocreativo.notelimites.io.models.relationship.Follow;
+import com.burocreativo.notelimites.io.models.user.UserResponse;
+import com.burocreativo.notelimites.screens.login.StartActivity;
 import com.burocreativo.notelimites.screens.page.PageEventActivity;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Juan C. Acosta on 9/3/2016.
@@ -56,6 +68,41 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             intent.putExtra("EventId", String.valueOf(event.getEventID()));
             context.startActivity(intent);
         });
+        ImageButton like = (ImageButton) holder.itemView.findViewById(R.id.like_btn);
+        like.setOnClickListener(view -> {
+            if(NTLApplication.tinyDB.getObject("user", UserResponse.class) == null){
+                Intent intent = new Intent(context, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                context.startActivity(intent);
+            } else {
+                Call<EventFollowed> followedCall;
+                if(!event.getFollowed()) {
+                    followedCall= ServiceGenerator.getApiService().followEvent(new Follow(NTLApplication.tinyDB.getString("user_id"),String.valueOf(event.getEventID())));
+                } else {
+                    followedCall = ServiceGenerator.getApiService().unFollowEvent(new Follow(NTLApplication.tinyDB.getString("user_id"),String.valueOf(event.getEventID())));
+                }
+
+                followedCall.enqueue(new Callback<EventFollowed>() {
+                    @Override
+                    public void onResponse(Call<EventFollowed> call1, Response<EventFollowed> response) {
+                        if(response.isSuccessful()){
+                            Drawable follow;
+                            if(response.body().getFollowed()){
+                                follow = context.getResources().getDrawable(R.drawable.ic_favorite);
+                            } else {
+                                follow = context.getResources().getDrawable(R.drawable.ic_favorite_border);
+                            }
+                            like.setBackground(follow);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<EventFollowed> call1, Throwable t) {
+
+                    }
+                });
+
+            }
+        });
     }
 
     public LatLng getEventLocation(int position) {
@@ -71,11 +118,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public void filter(final int cat) {
         filterList = new ArrayList<>();
         notifyDataSetChanged();
-        if(cat == 2){
+        if(cat == 3){
             filterList.addAll(eventList);
         } else {
 
-            if(cat>2){
+            if(cat>3){
                 Stream.of(eventList)
                         .filter(event -> event.getEventtypeID() == cat -1)
                         .forEach(event -> {
@@ -92,46 +139,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             }
 
         }
-       /* filterList.clear();
-        if(cat == 2){
-            filterList.addAll(eventList);
-        } else {
-            Stream.of(eventList)
-                    .filter(event -> {
-                        int category = cat+1;
-                        if(cat > 2)
-                            category = cat -1;
-                        return event.getEventtypeID() == category;
-                    }).forEach(event -> {
-                filterList.add(event);
-                notifyDataSetChanged();
-
-            });
-        }*/
-
-
-
-        /*new Thread(() -> {
-            if (cat == 2) {
-                filterList.addAll(eventList);
-            } else {
-                int category = cat + 1;
-                if (cat > 2) {
-                    category = cat - 1;
-                }
-                for (Event event : eventList) {
-                    if (event.getEventtypeID() == category) {
-                        filterList.add(event);
-                    }
-                }
-            }
-
-            // Set on UI Thread
-            ((Activity) context).runOnUiThread(() -> {
-                // Notify the List that the DataSet has changed...
-                notifyDataSetChanged();
-            });
-        }).start();*/
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{

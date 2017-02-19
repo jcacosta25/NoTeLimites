@@ -6,8 +6,12 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.burocreativo.notelimites.NTLApplication;
 import com.burocreativo.notelimites.R;
-import com.burocreativo.notelimites.screens.home.HomeActivity;
+import com.burocreativo.notelimites.io.ServiceGenerator;
+import com.burocreativo.notelimites.io.models.user.SendUser;
+import com.burocreativo.notelimites.io.models.user.UserResponse;
+import com.burocreativo.notelimites.screens.profile.ProfileActivity;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -22,6 +26,10 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class StartActivity extends FragmentActivity {
 
     private CallbackManager callbackManager;
@@ -30,6 +38,7 @@ public class StartActivity extends FragmentActivity {
     private AccessToken accessToken;
     View layout;
     public static final String TAG = "LOGIN";
+    private boolean profile = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +46,7 @@ public class StartActivity extends FragmentActivity {
         layout = findViewById(R.id.view);
         callbackManager = CallbackManager.Factory.create();
         fb_login_button = (LoginButton) findViewById(R.id.login_button_fb);
+        profile = getIntent().getBooleanExtra("profile",false);
         fb_login_button.setReadPermissions(Arrays.asList("public_profile,email,user_hometown,user_likes,user_status,user_about_me,user_location,user_tagged_places,user_birthday"));
 
 
@@ -62,6 +72,32 @@ public class StartActivity extends FragmentActivity {
                                 accessToken = AccessToken.getCurrentAccessToken();
                                 // Application code
 
+                                String userId = object.optString("id");
+                                SendUser user = new SendUser(object.optString("email"),String.valueOf(accessToken),object.optString("name"));
+                                Call<UserResponse> call = ServiceGenerator.getApiService().setUpUser(user);
+                                call.enqueue(new Callback<UserResponse>() {
+                                    @Override
+                                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                                        if(response.body().getImage() == null){
+                                            response.body().setImage("https://graph.facebook.com/" + userId + "/picture?type=large");
+                                        }
+                                        NTLApplication.tinyDB.putObject("user",response.body());
+                                        NTLApplication.tinyDB.putString("user_id",String.valueOf(response.body().getUserID()));
+                                        if(profile){
+                                            Intent intent = new Intent(StartActivity.this, ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            finish();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<UserResponse> call, Throwable t) {
+
+                                    }
+                                });
                             }
                         });
 
@@ -90,8 +126,6 @@ public class StartActivity extends FragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode,resultCode,data);
-        Intent intent = new Intent(this, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.burocreativo.notelimites.screens.page;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,13 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 
+import com.burocreativo.notelimites.NTLApplication;
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.databinding.ActivityPageEventBinding;
 import com.burocreativo.notelimites.io.ServiceGenerator;
 import com.burocreativo.notelimites.io.models.events.Event;
 import com.burocreativo.notelimites.io.models.events.VenueEvents;
+import com.burocreativo.notelimites.io.models.relationship.EventFollowed;
+import com.burocreativo.notelimites.io.models.relationship.Follow;
+import com.burocreativo.notelimites.io.models.user.UserResponse;
 import com.burocreativo.notelimites.screens.adapters.PageListAdapter;
+import com.burocreativo.notelimites.screens.login.StartActivity;
 
 import java.util.List;
 
@@ -51,12 +58,17 @@ public class PageEventActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
         eventList = (RecyclerView) findViewById(R.id.moreEventPlaceList);
 
-        Call<Event> call = ServiceGenerator.getApiService().getEvent(this.getIntent().getStringExtra("EventId"), ServiceGenerator.authToken);
+        String follower = NTLApplication.tinyDB.getString("user_id");
+        if(follower.equals("")){
+            follower = null;
+        }
+        Call<Event> call = ServiceGenerator.getApiService().getEvent(this.getIntent().getStringExtra("EventId"), ServiceGenerator.authToken,follower);
         call.enqueue(new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
                 if(response.isSuccessful()) {
-                    binding.setEvent(response.body());
+                    Event event = response.body();
+                    binding.setEvent(event);
                     RecView(response.body().getVenueEvents());
                     branchUniversalObject = new BranchUniversalObject()
                             .setCanonicalIdentifier(binding.getEvent().getEventUID())
@@ -95,7 +107,7 @@ public class PageEventActivity extends AppCompatActivity {
                 .addPreferredSharingOption(SharingHelper.SHARE_WITH.FACEBOOK)
                 .addPreferredSharingOption(SharingHelper.SHARE_WITH.EMAIL)
                 .setAsFullWidthStyle(true)
-                .setSharingTitle("Share With");
+                .setSharingTitle("compartir con");
 
         findViewById(R.id.share).setOnClickListener(view -> branchUniversalObject.showShareSheet(PageEventActivity.this,
                 linkProperties,
@@ -114,6 +126,42 @@ public class PageEventActivity extends AppCompatActivity {
                     public void onChannelSelected(String channelName) {
                     }
                 }));
+
+        Button like = (Button) findViewById(R.id.likeButton);
+        like.setOnClickListener(view -> {
+            if(NTLApplication.tinyDB.getObject("user", UserResponse.class) == null){
+                Intent intent = new Intent(PageEventActivity.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+            } else {
+                Call<EventFollowed> followedCall;
+                if(!binding.getEvent().getFollowed()) {
+                    followedCall= ServiceGenerator.getApiService().followEvent(new Follow(NTLApplication.tinyDB.getString("user_id"),String.valueOf(binding.getEvent().getEventID())));
+                } else {
+                    followedCall = ServiceGenerator.getApiService().unFollowEvent(new Follow(NTLApplication.tinyDB.getString("user_id"),String.valueOf(binding.getEvent().getEventID())));
+                }
+
+                followedCall.enqueue(new Callback<EventFollowed>() {
+                    @Override
+                    public void onResponse(Call<EventFollowed> call1, Response<EventFollowed> response) {
+                        if(response.isSuccessful()){
+                            Drawable follow;
+                            if(response.body().getFollowed()){
+                                follow = getResources().getDrawable(R.drawable.ic_favorite);
+                            } else {
+                                follow = getResources().getDrawable(R.drawable.ic_favorite_border);
+                            }
+                            like.setCompoundDrawables(follow,null,null,null);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<EventFollowed> call1, Throwable t) {
+
+                    }
+                });
+
+            }
+        });
 
     }
 

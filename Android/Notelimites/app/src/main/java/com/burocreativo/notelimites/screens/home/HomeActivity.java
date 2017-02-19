@@ -33,20 +33,20 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.burocreativo.notelimites.NTLApplication;
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.io.ServiceGenerator;
 import com.burocreativo.notelimites.io.models.events.Data;
 import com.burocreativo.notelimites.io.models.events.EventsList;
 import com.burocreativo.notelimites.io.models.locations.Locations;
+import com.burocreativo.notelimites.io.models.user.UserResponse;
 import com.burocreativo.notelimites.screens.adapters.EventListAdapter;
 import com.burocreativo.notelimites.screens.home.adapters.DrawerItem;
 import com.burocreativo.notelimites.screens.home.adapters.DrawerListAdapter;
+import com.burocreativo.notelimites.screens.login.StartActivity;
 import com.burocreativo.notelimites.screens.page.PageEventActivity;
 import com.burocreativo.notelimites.screens.profile.ProfileActivity;
 import com.burocreativo.notelimites.utils.SearchFeedResultsAdapter;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -87,21 +87,20 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static String[] columns;
     SearchView searchView;
     MatrixCursor cursor;
+    private  int mLastScrollTo;
     SearchFeedResultsAdapter searchFeedResultsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        cityName = getIntent().getStringExtra("city");
 
         if (googleApiClient == null) {
-            // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
-            // See https://g.co/AppIndexing/AndroidStudio for more information.
             googleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .addApi(AppIndex.API).build();
+                    .addApi(LocationServices.API).build();
         }
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -116,18 +115,31 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         for (String category : categoryList) {
             tabs.addTab(tabs.newTab().setText(category));
         }
-        TabLayout.Tab tab = tabs.getTabAt(2);
-        tab.select();
         tabs.setSelectedTabIndicatorColor(getResources().getColor(R.color.tab_selected));
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        TabLayout.Tab tab = tabs.getTabAt(3);
+        tab.select();
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
                 adapter.filter(tab.getPosition());
-            }
+
+                View selectedChild = tabs.getChildAt(tab.getPosition());
+                if (selectedChild != null && selectedChild.getMeasuredWidth() != 0) {
+
+                    int targetScrollX = ((tab.getPosition() + selectedChild.getLeft()) - tabs.getScrollBarSize() / 2) + selectedChild.getWidth() / 2;
+                    if (targetScrollX != mLastScrollTo) {
+                        tabs.scrollTo(targetScrollX,0);
+                        mLastScrollTo = targetScrollX;
+                    }
+
+                }
+
+                }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -139,29 +151,25 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
+        tab.select();
+
+
         startDrawer();
         columns = new String[]{"_id", "LOCATION_NAME", "LOCATION_SLUG", "LOCATION_LAT", "LOCATION_LON"};
         cursor = new MatrixCursor(columns);
         searchView = (SearchView) findViewById(R.id.search_city);
+        searchView.setQuery(cityName,false);
+        searchView.setQueryHint(cityName);
         searchView.setOnQueryTextListener(this);
         searchView.setOnSuggestionListener(this);
         searchFeedResultsAdapter = new SearchFeedResultsAdapter(this, R.layout.element_search_adapter, cursor, columns, null, -1000);
         searchView.setSuggestionsAdapter(searchFeedResultsAdapter);
-        searchView.setQuery(getIntent().getStringExtra("city"),false);
+
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-
     public void RecView(double lat, double lng) {
+        searchView.setQuery(cityName,false);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         Data data = new Data(ServiceGenerator.authToken, String.valueOf(lat), String.valueOf(lng));
         Callback<EventsList> callback = new Callback<EventsList>() {
@@ -180,7 +188,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         };
-        Call<EventsList> call = ServiceGenerator.getApiService().getEventLocations(data);
+        String follower = NTLApplication.tinyDB.getString("user_id");
+        if(follower.equals("")){
+            follower = null;
+        }
+        Call<EventsList> call = ServiceGenerator.getApiService().getEventLocations(data,follower);
         call.enqueue(callback);
 
         int firstVisiblePotition = layoutManager.findFirstVisibleItemPosition();
@@ -297,6 +309,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     if (addresses.size() > 0) {
                         System.out.println(addresses.get(0).getLocality());
+                        searchView.setQuery(addresses.get(0).getLocality(),false);
+                        searchView.setQueryHint(addresses.get(0).getLocality());
                         cityName = addresses.get(0).getLocality().toLowerCase().replace(' ', '_');
                     }
                 } catch (IOException e) {
@@ -323,22 +337,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Home Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -350,13 +348,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onStart();
 
         if (googleApiClient == null) {
-            // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
-            // See https://g.co/AppIndexing/AndroidStudio for more information.
             googleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .addApi(AppIndex.API).build();
+                    .addApi(LocationServices.API).build();
         }
         googleApiClient.connect();
 
@@ -398,8 +393,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.e("selectItem: ", String.valueOf(position));
         // Create a new fragment and specify the planet to show based on position
         if (position == 1) {
-            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+
         }
     }
 
@@ -491,33 +485,47 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
-            Intent i = new Intent();
+            Intent i;
 
             switch (position){
-                case 0:
-                    break;
                 case 1:
-                    i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse("http://info.notelimites.com/"));
+                    if(NTLApplication.tinyDB.getObject("user",UserResponse.class) != null) {
+                        i = new Intent(getApplicationContext(), ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    } else {
+                        i = new Intent(getApplicationContext(), StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.putExtra("profile",true);
+                    }
+                    startActivity(i);
                     break;
                 case 2:
                     i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse("http://info.notelimites.com/preguntas-frecuentes/"));
+                    i.setData(Uri.parse("http://info.notelimites.com/"));
+                    startActivity(i);
                     break;
                 case 3:
                     i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse("http://info.notelimites.com/contacto/"));
+                    i.setData(Uri.parse("http://info.notelimites.com/preguntas-frecuentes/"));
+                    startActivity(i);
                     break;
                 case 4:
                     i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse("http://info.notelimites.com/"));
+                    i.setData(Uri.parse("http://info.notelimites.com/contacto/"));
+                    startActivity(i);
                     break;
                 case 5:
                     i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse("http://info.notelimites.com/"));
+                    startActivity(i);
+                    break;
+                case 6:
+                    i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse("http://info.notelimites.com/instituciones-culturales/"));
+                    startActivity(i);
+                    break;
+                case 7:
+                    finish();
                     break;
             }
-            startActivity(i);
         }
     }
 

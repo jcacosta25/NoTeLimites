@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:background="@color/colorPrimaryDark"
+    android:layout_height="140dp"
+    android:background="@drawable/back_inicio"
     android:padding="16dp"
     android:orientation="vertical">
 
-    <android.support.v7.widget.SearchView
-        android:id="@+id/search_city"
+    <ImageView
+        android:id="@+id/ntl"
         android:queryHint="Monterrey"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:src="@drawable/logo"
+        >
 
-    </android.support.v7.widget.SearchView>
+    </ImageView>
 
 </LinearLayout>
