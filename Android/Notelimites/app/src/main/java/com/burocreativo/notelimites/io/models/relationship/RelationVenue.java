@@ -1,105 +1,68 @@
 
-package com.burocreativo.notelimites.io.models.places;
+package com.burocreativo.notelimites.io.models.relationship;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
-import com.burocreativo.notelimites.BR;
-import com.burocreativo.notelimites.io.models.events.Event;
+import com.android.databinding.library.baseAdapters.BR;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 @SuppressWarnings("unused")
-public class Venue extends BaseObservable {
-    @SerializedName("address")
-	@Expose
-	@Bindable
-    private String mAddress;
-    @SerializedName("city")
-	@Expose
-	@Bindable
-    private String mCity;
+public class RelationVenue  extends BaseObservable{
+
     @SerializedName("description")
-	@Expose
-	@Bindable
-    private String mDescription;
-    @SerializedName("events")
-	@Expose
-	@Bindable
-    private List<Event> mEvents;
+    @Expose
+    @Bindable
+    private String  mDescription;
     @SerializedName("followed")
-	@Expose
-	@Bindable
+    @Expose
+    @Bindable
     private boolean mFollowed;
     @SerializedName("imageURL")
-	@Expose
-	@Bindable
+    @Expose
+    @Bindable
     private String mImageURL;
-    @SerializedName("lat")
-	@Expose
-	@Bindable
-    private String mLat;
-    @SerializedName("lng")
-	@Expose
-	@Bindable
-    private String mLng;
-    @SerializedName("slug")
-	@Expose
-	@Bindable
-    private String mSlug;
+    @SerializedName("placeLat")
+    @Expose
+    @Bindable
+    private String mPlaceLat;
+    @SerializedName("placeLng")
+    @Expose
+    @Bindable
+    private String mPlaceLng;
+    @SerializedName("relationVenueID")
+    @Expose
+    @Bindable
+    private Long mRelationVenueID;
     @SerializedName("venueID")
-	@Expose
-	@Bindable
+    @Expose
+    @Bindable
     private Long mVenueID;
     @SerializedName("venueName")
-	@Expose
-	@Bindable
+    @Expose
+    @Bindable
     private String mVenueName;
+    @SerializedName("venueSlug")
+    @Expose
+    @Bindable
+    private String mVenueSlug;
     @SerializedName("venueUID")
-	@Expose
-	@Bindable
+    @Expose
+    @Bindable
     private String mVenueUID;
     @SerializedName("venueURLID")
-	@Expose
-	@Bindable
+    @Expose
+    @Bindable
     private String mVenueURLID;
 
-    public String getAddress() {
-        return mAddress;
-    }
-
-    public void setAddress(String address) {
-        mAddress = address;
-        notifyPropertyChanged(BR.address);
-    }
-
-    public String getCity() {
-        return mCity;
-    }
-
-    public void setCity(String city) {
-        mCity = city;
-        notifyPropertyChanged(BR.city);
-    }
-
-    public String getDescription() {
+    public Object getDescription() {
         return mDescription;
     }
 
     public void setDescription(String description) {
         mDescription = description;
         notifyPropertyChanged(BR.description);
-    }
-
-    public List<Event> getEvents() {
-        return mEvents;
-    }
-
-    public void setEvents(List<Event> events) {
-        mEvents = events;
-        notifyPropertyChanged(BR.events);
     }
 
     public boolean getFollowed() {
@@ -120,31 +83,30 @@ public class Venue extends BaseObservable {
         notifyPropertyChanged(BR.imageURL);
     }
 
-    public String getLat() {
-        return mLat;
+    public String getPlaceLat() {
+        return mPlaceLat;
     }
 
-    public void setLat(String lat) {
-        mLat = lat;
-        notifyPropertyChanged(BR.lat);
+    public void setPlaceLat(String placeLat) {
+        mPlaceLat = placeLat;
+        notifyPropertyChanged(BR.placeLat);
     }
 
-    public String getLng() {
-        return mLng;
+    public String getPlaceLng() {
+        return mPlaceLng;
     }
 
-    public void setLng(String lng) {
-        mLng = lng;
-        notifyPropertyChanged(BR.lng);
+    public void setPlaceLng(String placeLng) {
+        mPlaceLng = placeLng;
+        notifyPropertyChanged(BR.placeLng);
     }
 
-    public String getSlug() {
-        return mSlug;
+    public Long getRelationVenueID() {
+        return mRelationVenueID;
     }
 
-    public void setSlug(String slug) {
-        mSlug = slug;
-        notifyPropertyChanged(BR.slug);
+    public void setRelationVenueID(Long relationVenueID) {
+        mRelationVenueID = relationVenueID;
     }
 
     public Long getVenueID() {
@@ -163,6 +125,14 @@ public class Venue extends BaseObservable {
     public void setVenueName(String venueName) {
         mVenueName = venueName;
         notifyPropertyChanged(BR.venueName);
+    }
+
+    public String getVenueSlug() {
+        return mVenueSlug;
+    }
+
+    public void setVenueSlug(String venueSlug) {
+        mVenueSlug = venueSlug;
     }
 
     public String getVenueUID() {

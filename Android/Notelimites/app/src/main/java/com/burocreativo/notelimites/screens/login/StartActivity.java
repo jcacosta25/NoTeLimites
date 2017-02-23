@@ -47,7 +47,7 @@ public class StartActivity extends FragmentActivity {
         callbackManager = CallbackManager.Factory.create();
         fb_login_button = (LoginButton) findViewById(R.id.login_button_fb);
         profile = getIntent().getBooleanExtra("profile",false);
-        fb_login_button.setReadPermissions(Arrays.asList("public_profile,email,user_hometown,user_likes,user_status,user_about_me,user_location,user_tagged_places,user_birthday"));
+        fb_login_button.setReadPermissions(Arrays.asList("public_profile,email,user_hometown,user_likes,user_about_me,user_location,user_birthday"));
 
 
         accessTokenTracker = new AccessTokenTracker() {

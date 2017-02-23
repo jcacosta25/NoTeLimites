@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">No te limites</string>
     <string name="title_activity_maps">Map</string>
-    <string name="facebook_app_id">473160562786733</string>
+    <!--<string name="facebook_app_id">473160562786733</string> -->
+    <string name="facebook_app_id">182819485154177</string>
 
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>

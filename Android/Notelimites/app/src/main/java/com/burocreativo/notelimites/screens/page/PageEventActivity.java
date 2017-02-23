@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
 import com.burocreativo.notelimites.NTLApplication;
@@ -81,8 +82,8 @@ public class PageEventActivity extends AppCompatActivity {
                     linkProperties = new LinkProperties()
                             .setChannel("facebook")
                             .setFeature("sharing")
-                            .addControlParameter("$desktop_url","http://www.notelimites.com/eventos/"+binding.getEvent().getEventName().toLowerCase().replace(' ','-'))
-                            .addControlParameter("$ios_url","http://www.notelimites.com/eventos/"+binding.getEvent().getEventName().toLowerCase().replace(' ','-'));
+                            .addControlParameter("$desktop_url","http://www.notelimites.com/eventos/"+binding.getEvent().getEventID())
+                            .addControlParameter("$ios_url","http://www.notelimites.com/eventos/"+binding.getEvent().getEventID());
 
                     branchUniversalObject.generateShortUrl(PageEventActivity.this, linkProperties, new Branch.BranchLinkCreateListener() {
                         @Override
@@ -126,6 +127,15 @@ public class PageEventActivity extends AppCompatActivity {
                     public void onChannelSelected(String channelName) {
                     }
                 }));
+
+        findViewById(R.id.page_place_location_txt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PageEventActivity.this,PagePlaceActivity.class);
+                intent.putExtra("VenueId",String.valueOf(binding.getEvent().getVenueID()));
+                startActivity(intent);
+            }
+        });
 
         Button like = (Button) findViewById(R.id.likeButton);
         like.setOnClickListener(view -> {

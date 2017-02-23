@@ -22,11 +22,26 @@
                     android:id="@+id/toolbar"
                     layout="@layout/toolbar" />
 
-                <android.support.v7.widget.SearchView
-                    android:id="@+id/search_city"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp">
+                    <android.support.v7.widget.SearchView
+                        android:id="@+id/search_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/search_city_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:layout_marginStart="62dp"
+                        android:layout_marginLeft="62dp"
+                        />
+                </RelativeLayout>
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tabs"

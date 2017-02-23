@@ -179,7 +179,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
-                    android:drawableLeft="@{event.followed? @drawable/ic_favorite : @drawable/ic_favorite_border}"
+                    android:drawableLeft="@{event.followed ? @drawable/ic_favorite : @drawable/ic_favorite_border}"
                     android:drawableStart="@{event.followed ? @drawable/ic_favorite : @drawable/ic_favorite_border}"
                     android:text="Favorito" />
 

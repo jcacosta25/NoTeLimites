@@ -106,8 +106,18 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     }
 
     public LatLng getEventLocation(int position) {
+        if(position == -1){
+            position = 0;
+        }
         Event event = filterList.get(position);
         return new LatLng(Double.parseDouble(event.getPlaceLat()), Double.parseDouble(event.getPlaceLng()));
+    }
+
+    public String getEventPlace(int position){
+        if(position == -1)
+            position = 0;
+        Event event = filterList.get(position);
+        return event.getVenueName();
     }
 
     @Override

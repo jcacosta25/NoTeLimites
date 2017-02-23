@@ -1,60 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="16dp"
-    android:background="@drawable/auditorio_bnmx"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v4.widget.Space
-        android:layout_width="match_parent"
-        android:layout_height="80dp" />
-    <LinearLayout
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+    <data>
+        <import type="com.burocreativo.notelimites.screens.DataBinder" />
 
+        <variable
+            name="relationVenue"
+            type="com.burocreativo.notelimites.io.models.relationship.RelationVenue" />
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:imageLoader="@{relationVenue.imageURL}"
+            />
         <LinearLayout
-            android:layout_marginLeft="16dp"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <de.morrox.fontinator.FontTextView
+            <LinearLayout
+                android:layout_marginLeft="16dp"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Auditorio Banamex"
-                android:textSize="20sp"
-                app:font="MyriandPro-Regular.otf"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
-                />
+                android:layout_height="match_parent">
 
-            <de.morrox.fontinator.FontTextView
-                android:layout_marginTop="8dp"
-                android:layout_width="wrap_content"
-                app:font="MyriandPro-lt.otf"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_location"
-                android:text="Monterrey Nuevo Leon"
-                android:textColor="@android:color/white"
-                />
+                <de.morrox.fontinator.FontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{relationVenue.venueName}"
+                    android:textSize="20sp"
+                    app:font="MyriandPro-Regular.otf"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white" />
+
+                <de.morrox.fontinator.FontTextView
+                    android:layout_marginTop="8dp"
+                    android:layout_width="wrap_content"
+                    app:font="MyriandPro-lt.otf"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_location"
+                    android:text="@{relationVenue.venueName}"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:background="@{relationVenue.followed ? @drawable/ic_favorite : @drawable/ic_favorite_border}"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
 
         </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ImageButton
-                android:background="@drawable/btn_like_event"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="24dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-
-    </LinearLayout>
-</LinearLayout>
+    </RelativeLayout>
+</layout>

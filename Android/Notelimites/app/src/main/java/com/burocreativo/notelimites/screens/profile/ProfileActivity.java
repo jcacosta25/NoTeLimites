@@ -17,6 +17,7 @@ import com.burocreativo.notelimites.databinding.ActivityProfileBinding;
 import com.burocreativo.notelimites.io.models.user.UserResponse;
 import com.burocreativo.notelimites.screens.profile.adapters.ViewPagerAdapter;
 import com.burocreativo.notelimites.screens.profile.fragments.MyEventsFragment;
+import com.burocreativo.notelimites.screens.profile.fragments.MyPlacesFragment;
 
 public class  ProfileActivity extends AppCompatActivity {
 
@@ -49,7 +50,7 @@ public class  ProfileActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.profile_viewpager);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new MyEventsFragment(),"Tus Eventos");
-        //adapter.addFrag(new MyPlacesFragment(), "Tus Lugares");
+        adapter.addFrag(new MyPlacesFragment(), "Tus Lugares");
         tabs.setTabGravity(TabLayout.GRAVITY_FILL);
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);

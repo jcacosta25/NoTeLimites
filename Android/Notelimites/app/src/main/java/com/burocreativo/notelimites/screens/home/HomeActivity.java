@@ -6,6 +6,9 @@ import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -31,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.burocreativo.notelimites.NTLApplication;
@@ -45,6 +49,7 @@ import com.burocreativo.notelimites.screens.home.adapters.DrawerItem;
 import com.burocreativo.notelimites.screens.home.adapters.DrawerListAdapter;
 import com.burocreativo.notelimites.screens.login.StartActivity;
 import com.burocreativo.notelimites.screens.page.PageEventActivity;
+import com.burocreativo.notelimites.screens.page.PagePlaceActivity;
 import com.burocreativo.notelimites.screens.profile.ProfileActivity;
 import com.burocreativo.notelimites.utils.SearchFeedResultsAdapter;
 import com.google.android.gms.common.ConnectionResult;
@@ -54,6 +59,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -84,11 +92,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleApiClient googleApiClient;
     private View currentFocusedLayout, oldFocusedLayout;
     private String cityName;
+    private TextView searchCityTxt;
     public static String[] columns;
+    public double lat,lng;
     SearchView searchView;
     MatrixCursor cursor;
     private  int mLastScrollTo;
     SearchFeedResultsAdapter searchFeedResultsAdapter;
+    private int ZOOM_TO = 13;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,10 +169,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         columns = new String[]{"_id", "LOCATION_NAME", "LOCATION_SLUG", "LOCATION_LAT", "LOCATION_LON"};
         cursor = new MatrixCursor(columns);
         searchView = (SearchView) findViewById(R.id.search_city);
+        searchCityTxt = (TextView) findViewById(R.id.search_city_txt);
+        searchView.setOnSearchClickListener(view -> searchCityTxt.setVisibility(View.GONE));
+        searchView.setOnCloseListener(() -> {
+            searchCityTxt.setVisibility(View.VISIBLE);
+            return false;
+        });
+        searchCityTxt.setText(cityName);
         searchView.setQuery(cityName,false);
         searchView.setQueryHint(cityName);
         searchView.setOnQueryTextListener(this);
         searchView.setOnSuggestionListener(this);
+        searchView.clearFocus();
         searchFeedResultsAdapter = new SearchFeedResultsAdapter(this, R.layout.element_search_adapter, cursor, columns, null, -1000);
         searchView.setSuggestionsAdapter(searchFeedResultsAdapter);
 
@@ -169,7 +188,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     public void RecView(double lat, double lng) {
+        this.lat = lat;
+        this.lng = lng;
         searchView.setQuery(cityName,false);
+        LatLng latlng = new LatLng(lat,lng);
+        mMap.getUiSettings().setAllGesturesEnabled(false);
+        BitmapDescriptor markerIcon = getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.location_marker));
+        mMap.addMarker(new MarkerOptions().position(latlng).icon(markerIcon));
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(latlng)              // Center Set
+                .zoom(11.0f)                // Zoom
+                .build();
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         Data data = new Data(ServiceGenerator.authToken, String.valueOf(lat), String.valueOf(lng));
         Callback<EventsList> callback = new Callback<EventsList>() {
@@ -218,7 +248,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         LatLng eventLocation = adapter.getEventLocation(location);
                         mMap.addMarker(new MarkerOptions().position(eventLocation));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLocation));
-                        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+                        mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM_TO));
                     }
                 }
             }
@@ -279,25 +309,25 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
+        if(item.getItemId() == R.id.my_location){
+            LatLng latlng = new LatLng(lat,lng);
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(latlng)              // Center Set
+                    .zoom(11.0f)                // Zoom
+                    .build();
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (getIntent().hasExtra("lat")) {
-            String latString = getIntent().getStringExtra("lat");
-            String lngString = getIntent().getStringExtra("lng");
+            lat = Double.parseDouble(getIntent().getStringExtra("lat")) ;
+            lng = Double.parseDouble(getIntent().getStringExtra("lng"));
             cityName = getIntent().getStringExtra("slug");
-            RecView(Double.parseDouble(latString), Double.parseDouble(lngString));
-            LatLng sydney = new LatLng(Double.parseDouble(latString), Double.parseDouble(lngString));
-            mMap.getUiSettings().setAllGesturesEnabled(false);
-            mMap.addMarker(new MarkerOptions().position(sydney).title("Tu estas Aqui"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+            RecView(lat,lng);
         } else {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 123);
@@ -311,18 +341,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         System.out.println(addresses.get(0).getLocality());
                         searchView.setQuery(addresses.get(0).getLocality(),false);
                         searchView.setQueryHint(addresses.get(0).getLocality());
-                        cityName = addresses.get(0).getLocality().toLowerCase().replace(' ', '_');
+                        cityName = addresses.get(0).getLocality();
+                        searchCityTxt.setText(cityName);
+                        searchView.clearFocus();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
                 RecView(location.getLatitude(), location.getLongitude());
-                LatLng sydney = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.getUiSettings().setAllGesturesEnabled(false);
-                mMap.addMarker(new MarkerOptions().position(sydney).title("Tu estas Aqui"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
             }
         }
     }
@@ -369,6 +396,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
                         intent.putExtra("EventId", String.valueOf(referringParams.get("event")));
+                        startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if(referringParams.has("venue")){
+                    Intent intent = new Intent(HomeActivity.this, PagePlaceActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        intent.putExtra("VenueId",String.valueOf(referringParams.get("venue")));
                         startActivity(intent);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -459,8 +497,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (cursor.getString(3) == null && cursor.getString(4) == null) {
             Toast.makeText(HomeActivity.this, "No se puede encontrar este lugar", Toast.LENGTH_SHORT).show();
         } else {
+            mMap.clear();
             RecView(Double.parseDouble(cursor.getString(3)),Double.parseDouble(cursor.getString(4)));
             searchView.setQuery(feedName,false);
+            searchView.setQueryHint(feedName);
+            searchCityTxt.setText(feedName);
             searchView.clearFocus();
         }
         return true;
@@ -473,8 +514,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (cursor.getString(3) == null && cursor.getString(4) == null) {
             Toast.makeText(HomeActivity.this, "No se puede encontrar este lugar", Toast.LENGTH_SHORT).show();
         } else {
+            mMap.clear();
             RecView(Double.parseDouble(cursor.getString(3)),Double.parseDouble(cursor.getString(4)));
             searchView.setQuery(feedName,false);
+            searchCityTxt.setText(feedName);
+            searchView.setQueryHint(feedName);
             searchView.clearFocus();
 
         }
@@ -538,5 +582,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onDestroy() {
         super.onDestroy();
         googleApiClient.disconnect();
+    }
+
+    private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }
