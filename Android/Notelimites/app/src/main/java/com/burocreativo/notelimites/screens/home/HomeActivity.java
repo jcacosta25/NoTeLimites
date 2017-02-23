@@ -167,7 +167,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         startDrawer();
-        columns = new String[]{"_id", "LOCATION_NAME", "LOCATION_SLUG", "LOCATION_LAT", "LOCATION_LON","LOCATION_UPER","LOCATION_LOWER"};
+        columns = new String[]{"_id", "LOCATION_NAME", "LOCATION_SLUG", "LOCATION_LAT", "LOCATION_LON"};
         cursor = new MatrixCursor(columns);
         searchView = (SearchView) findViewById(R.id.search_city);
         searchCityTxt = (TextView) findViewById(R.id.search_city_txt);
@@ -467,7 +467,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         cursor = new MatrixCursor(columns);
         int i = 0;
         for (com.burocreativo.notelimites.io.models.locations.Location location : locations) {
-            if (location.getLocationName() != null && location.getLocationName().contains(searchText)) {
+            if (location.getLocationName() != null &&
+                    location.getLocationName().contains(searchText)||
+                    location.getLocationName().toLowerCase().contains(searchText)||
+                    location.getLocationName().toUpperCase().contains(searchText)) {
                 String[] temp = new String[columns.length];
                 i = i + 1;
                 temp[0] = Integer.toString(i);
@@ -475,8 +478,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 temp[2] = location.getLocationSlug();
                 temp[3] = location.getLocationLat();
                 temp[4] = location.getLocationLng();
-                temp[5] = location.getLocationName().toUpperCase();
-                temp[5] = location.getLocationName().toLowerCase();
                 cursor.addRow(temp);
             }
         }
