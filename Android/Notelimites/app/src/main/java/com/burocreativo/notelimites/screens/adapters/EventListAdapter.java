@@ -38,7 +38,7 @@ import retrofit2.Response;
  */
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
 
-    private List<Event> eventList, filterList;
+    private List<Event> eventList = new ArrayList<>(), filterList = new ArrayList<>();
     private Context context;
 
     public EventListAdapter(List<Event> eventList, Context context) {

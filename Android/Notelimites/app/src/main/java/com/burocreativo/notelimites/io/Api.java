@@ -39,7 +39,7 @@ public interface Api {
     @POST("locations/")
     Call<EventsList> getEventLocations(@Body Data locations,@Query("follower_id") String follower);
 
-    @GET("locations/?auth_token=i2gShFXzWnLF2A7f8_aQ")
+    @GET("locations/?auth_token=i2gShFXzWnLF2A7f8_aQ&tm=true")
     Call<Locations> getLocations();
 
     @GET("events/{eventid}")

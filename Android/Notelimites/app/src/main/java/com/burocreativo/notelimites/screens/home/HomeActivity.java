@@ -137,7 +137,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-                adapter.filter(tab.getPosition());
+                if(adapter != null)
+                    adapter.filter(tab.getPosition());
 
                 View selectedChild = tabs.getChildAt(tab.getPosition());
                 if (selectedChild != null && selectedChild.getMeasuredWidth() != 0) {
@@ -166,7 +167,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         startDrawer();
-        columns = new String[]{"_id", "LOCATION_NAME", "LOCATION_SLUG", "LOCATION_LAT", "LOCATION_LON"};
+        columns = new String[]{"_id", "LOCATION_NAME", "LOCATION_SLUG", "LOCATION_LAT", "LOCATION_LON","LOCATION_UPER","LOCATION_LOWER"};
         cursor = new MatrixCursor(columns);
         searchView = (SearchView) findViewById(R.id.search_city);
         searchCityTxt = (TextView) findViewById(R.id.search_city_txt);
@@ -474,6 +475,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 temp[2] = location.getLocationSlug();
                 temp[3] = location.getLocationLat();
                 temp[4] = location.getLocationLng();
+                temp[5] = location.getLocationName().toUpperCase();
+                temp[5] = location.getLocationName().toLowerCase();
                 cursor.addRow(temp);
             }
         }

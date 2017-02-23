@@ -3,6 +3,9 @@
     <string name="title_activity_maps">Map</string>
     <!--<string name="facebook_app_id">473160562786733</string> -->
     <string name="facebook_app_id">182819485154177</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyC-sim9CgfPKn1H6iZlvgIEozHp0s_z3Xc
+    </string>
 
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>

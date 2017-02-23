@@ -115,7 +115,10 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         cursor = new MatrixCursor(columns);
         int i = 0;
         for (Location location : locations) {
-            if (location.getLocationName() != null && location.getLocationName().contains(searchText)) {
+            if (location.getLocationName() != null &&
+                    location.getLocationName().contains(searchText)||
+                    location.getLocationName().toLowerCase().contains(searchText)||
+                    location.getLocationName().toUpperCase().contains(searchText)) {
                 String[] temp = new String[columns.length];
                 i = i + 1;
                 temp[0] = Integer.toString(i);
