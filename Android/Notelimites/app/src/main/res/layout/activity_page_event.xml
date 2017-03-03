@@ -92,22 +92,6 @@
                             </LinearLayout>
 
                         </LinearLayout>
-
-
-                        <RelativeLayout
-                        android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
-
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginRight="8dp"
-                                android:layout_marginTop="24dp"
-                                android:background="@drawable/btn_like_event" />
-                        </RelativeLayout>
                     </LinearLayout>
                 </RelativeLayout>
             </android.support.design.widget.AppBarLayout>

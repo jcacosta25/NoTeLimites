@@ -17,6 +17,7 @@
         android:id="@+id/login_logo"
         android:layout_width="290dp"
         android:layout_height="32dp"
+        android:tint="@color/white"
         android:background="@drawable/logo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"

@@ -82,8 +82,8 @@ public class PageEventActivity extends AppCompatActivity {
                     linkProperties = new LinkProperties()
                             .setChannel("facebook")
                             .setFeature("sharing")
-                            .addControlParameter("$desktop_url","http://www.notelimites.com/eventos/"+binding.getEvent().getEventID())
-                            .addControlParameter("$ios_url","http://www.notelimites.com/eventos/"+binding.getEvent().getEventID());
+                            .addControlParameter("$desktop_url","http://www.notelimites.com/eventos/"+binding.getEvent().getEventName().toLowerCase().replace(' ','-'))
+                            .addControlParameter("$ios_url","http://www.notelimites.com/eventos/"+binding.getEvent().getEventName().toLowerCase().replace(' ','-'));
 
                     branchUniversalObject.generateShortUrl(PageEventActivity.this, linkProperties, new Branch.BranchLinkCreateListener() {
                         @Override

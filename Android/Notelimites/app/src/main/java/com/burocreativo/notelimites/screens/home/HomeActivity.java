@@ -99,7 +99,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     MatrixCursor cursor;
     private  int mLastScrollTo;
     SearchFeedResultsAdapter searchFeedResultsAdapter;
-    private int ZOOM_TO = 13;
+    private float ZOOM_TO = 13.0f;
+    private float FIRST_ZOOM = 11.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,14 +194,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.lng = lng;
         searchView.setQuery(cityName,false);
         LatLng latlng = new LatLng(lat,lng);
-        mMap.getUiSettings().setAllGesturesEnabled(false);
+        //mMap.getUiSettings().setAllGesturesEnabled(false);
         BitmapDescriptor markerIcon = getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.location_marker));
         mMap.addMarker(new MarkerOptions().position(latlng).icon(markerIcon));
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(latlng)              // Center Set
-                .zoom(11.0f)                // Zoom
+                .zoom(FIRST_ZOOM)                // Zoom
                 .build();
-        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         Data data = new Data(ServiceGenerator.authToken, String.valueOf(lat), String.valueOf(lng));
         Callback<EventsList> callback = new Callback<EventsList>() {
@@ -249,7 +250,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         LatLng eventLocation = adapter.getEventLocation(location);
                         mMap.addMarker(new MarkerOptions().position(eventLocation));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLocation));
-                        mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM_TO));
+                        mMap.animateCamera(CameraUpdateFactory.zoomTo(ZOOM_TO));
                     }
                 }
             }
@@ -314,9 +315,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng latlng = new LatLng(lat,lng);
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(latlng)              // Center Set
-                    .zoom(11.0f)                // Zoom
+                    .zoom(FIRST_ZOOM)                // Zoom
                     .build();
-            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 
@@ -327,7 +328,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (getIntent().hasExtra("lat")) {
             lat = Double.parseDouble(getIntent().getStringExtra("lat")) ;
             lng = Double.parseDouble(getIntent().getStringExtra("lng"));
-            cityName = getIntent().getStringExtra("slug");
+            cityName = getIntent().getStringExtra("city");
             RecView(lat,lng);
         } else {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

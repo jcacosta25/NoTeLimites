@@ -12,23 +12,11 @@
         android:id="@+id/login_logo"
         android:layout_width="290dp"
         android:layout_height="32dp"
-        android:background="@drawable/logo"
+        android:tint="@color/white"
+        android:src="@drawable/logo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="158dp" />
-
-    <de.morrox.fontinator.FontTextView
-        android:id="@+id/login_txt1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Inicia sesion"
-        android:textSize="22sp"
-        app:font="MyriandPro-lt.otf"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:layout_below="@id/login_logo"
-        android:padding="64dp"
-        />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button_fb"
@@ -52,5 +40,19 @@
         android:layout_below="@+id/login_button_fb"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <de.morrox.fontinator.FontTextView
+        android:id="@+id/login_txt1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Inicia sesion"
+        android:textSize="22sp"
+        app:font="MyriandPro-lt.otf"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:padding="64dp"
+        android:layout_below="@+id/login_logo"
+        android:layout_alignRight="@+id/login_logo"
+        android:layout_alignEnd="@+id/login_logo" />
 
 </RelativeLayout>
