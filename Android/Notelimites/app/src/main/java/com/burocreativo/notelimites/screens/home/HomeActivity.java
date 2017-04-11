@@ -177,6 +177,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             searchCityTxt.setVisibility(View.VISIBLE);
             return false;
         });
+        searchView.setOnClickListener(v->{searchView.setIconified(false);});
+        searchCityTxt.setOnClickListener(v->{searchView.setIconified(false);});
         searchCityTxt.setText(cityName);
         searchView.setQuery(cityName,false);
         searchView.setQueryHint(cityName);

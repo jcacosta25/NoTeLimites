@@ -51,6 +51,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         searchFeedResultsAdapter = new SearchFeedResultsAdapter(this, R.layout.element_search_adapter, cursor, columns, null, -1000);
         searchView.setSuggestionsAdapter(searchFeedResultsAdapter);
         findViewById(R.id.btn_find_location).setOnClickListener(view -> showPreview(layout));
+        searchView.setOnClickListener(v->{searchView.setIconified(false);});
     }
 
 

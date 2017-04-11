@@ -12,7 +12,7 @@ public class ServiceGenerator {
     private static Retrofit retrofit;
     public static String authToken;
     public static Api getApiService(){
-        String API_BASE_URL = "http://api.notelimites.com/v101/";
+        String API_BASE_URL = "https://api.notelimites.com/v101/";
             retrofit = new Retrofit.Builder()
                     .baseUrl(API_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
