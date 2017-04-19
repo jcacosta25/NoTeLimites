@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:fb="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/view"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:fb="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/view"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingTop="@dimen/activity_vertical_margin"
+  android:paddingBottom="@dimen/activity_vertical_margin"
+  android:paddingLeft="@dimen/activity_horizontal_margin"
+  android:paddingRight="@dimen/activity_horizontal_margin"
+  android:background="@drawable/back_inicio"
+  tools:context=".login.StartActivity">
+
+  <ImageView
+    android:id="@+id/login_logo"
+    android:layout_width="290dp"
+    android:layout_height="32dp"
+    android:layout_marginTop="158dp"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:src="@drawable/logo"
+    android:tint="@color/white"/>
+
+  <de.morrox.fontinator.FontTextView
+    android:id="@+id/login_txt1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/back_inicio"
-    tools:context=".login.StartActivity">
+    android:layout_height="wrap_content"
+    android:layout_below="@id/login_logo"
+    android:padding="64dp"
+    android:gravity="center"
+    android:text="@string/inicia_sesion"
+    android:textColor="@android:color/white"
+    android:textSize="22sp"
+    app:font="MyriandPro-Regular.otf"
+    />
 
-    <ImageView
-        android:id="@+id/login_logo"
-        android:layout_width="290dp"
-        android:layout_height="32dp"
-        android:tint="@color/white"
-        android:background="@drawable/logo"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="158dp" />
+  <com.facebook.login.widget.LoginButton
+    android:id="@+id/login_button_fb"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/login_txt1"
+    android:layout_centerHorizontal="true"
+    android:layout_gravity="center_horizontal"
+    fb:com_facebook_login_text="Conectar con Facebook"/>
 
-    <de.morrox.fontinator.FontTextView
-        android:id="@+id/login_txt1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Inicia sesion"
-        app:font="MyriandPro-Regular.otf"
-        android:textSize="22sp"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:layout_below="@id/login_logo"
-        android:padding="64dp"
-        />
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button_fb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        fb:com_facebook_login_text="Conectar con Facebook"
-        android:layout_below="@+id/login_txt1"
-        android:layout_centerHorizontal="true" />
-
-    <de.morrox.fontinator.FontTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Terminos y condiciones"
-        android:gravity="center"
-        android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"
-        app:font="MyriandPro-Regular.otf"
-        android:layout_marginTop="38dp"
-        android:layout_below="@+id/login_button_fb"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+  <de.morrox.fontinator.FontTextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="38dp"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_below="@+id/login_button_fb"
+    android:gravity="center"
+    android:text="Terminos y condiciones"
+    android:textColor="@android:color/darker_gray"
+    android:textSize="14sp"
+    app:font="MyriandPro-Regular.otf"/>
 
 </RelativeLayout>

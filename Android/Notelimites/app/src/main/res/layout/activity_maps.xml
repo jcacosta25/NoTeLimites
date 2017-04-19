@@ -18,9 +18,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <include
-                    android:id="@+id/toolbar"
-                    layout="@layout/toolbar" />
+                <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:local="http://schemas.android.com/apk/res-auto"
+                  android:id="@+id/toolbar"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="?attr/colorPrimary"
+                  android:minHeight="?attr/actionBarSize"
+                  android:title=""
+                  local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                  local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                    <ImageView
+                      android:layout_width="180dp"
+                      android:layout_height="wrap_content"
+                      android:src="@drawable/logo"
+                      android:tint="@color/white"
+                      />
+                </android.support.v7.widget.Toolbar>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"

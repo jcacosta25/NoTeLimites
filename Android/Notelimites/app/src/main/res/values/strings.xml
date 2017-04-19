@@ -45,4 +45,8 @@
     <string name="encontrar_ubicacion">Encontrar Ubicacion</string>
     <string name="terminos_y_condiciones">Terminos y condiciones</string>
     <string name="otros_eventos_de_musica">Otros eventos Relacionados:  </string>
+  <string name="event_img">event image</string>
+  <string name="like_event">like event</string>
+    <string name="add_to_calendar">add to calendar</string>
+  <string name="inicia_sesion">Inicia sesion</string>
 </resources>
