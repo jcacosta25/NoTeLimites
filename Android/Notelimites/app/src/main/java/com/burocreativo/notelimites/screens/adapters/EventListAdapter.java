@@ -100,10 +100,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
           followedCall = ServiceGenerator.getApiService().followEvent(
               new Follow(NTLApplication.tinyDB.getString("user_id"),
                   String.valueOf(event.getEventID())));
+          ((Event) filterList.get(position)).setAttendings(event.getAttendings()+1);
         } else {
           followedCall = ServiceGenerator.getApiService().unFollowEvent(
               new Follow(NTLApplication.tinyDB.getString("user_id"),
                   String.valueOf(event.getEventID())));
+          ((Event) filterList.get(position)).setAttendings(event.getAttendings()-1);
         }
 
         followedCall.enqueue(new Callback<EventFollowed>() {
