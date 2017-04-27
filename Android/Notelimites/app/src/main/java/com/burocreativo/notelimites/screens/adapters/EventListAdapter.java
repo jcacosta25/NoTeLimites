@@ -62,7 +62,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     this.context = context;
     this.filterList = new ArrayList<>();
     this.filterList.addAll(eventList);
-    setMarkers();
+    //setMarkers();
   }
 
   @Override
@@ -166,11 +166,16 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
   public void filter(final int cat) {
     filterList = new ArrayList<>();
     notifyDataSetChanged();
-    if (cat == 3) {
+    if (cat == 0) {
       filterList.addAll(eventList);
     } else {
-
-      if (cat > 3) {
+      Stream.of(eventList)
+          .filter(event -> event.getEventtypeID() == cat + 1)
+          .forEach(event -> {
+            filterList.add(event);
+            notifyDataSetChanged();
+          });
+     /* if (cat > 3) {
         Stream.of(eventList)
             .filter(event -> event.getEventtypeID() == cat - 1)
             .forEach(event -> {
@@ -184,30 +189,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
               filterList.add(event);
               notifyDataSetChanged();
             });
-      }
+      }*/
 
     }
-    setMarkers();
+    //setMarkers();
   }
 
-  public void setMarkers() {
-    mMap.clear();
-    int currentPosition = 0;
-    for (Event event : filterList) {
-      LatLng eventLocation = new LatLng(Double.parseDouble(event.getPlaceLat()),
-          Double.parseDouble(event.getPlaceLng()));
-      View markerView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
-      FontTextView numTxt = (FontTextView) markerView.findViewById(R.id.marker_id );
-      numTxt.setText(String.valueOf(currentPosition));
-      Marker marker = mMap.addMarker(
-          new MarkerOptions().
-              title(event.getVenueName())
-              .position(eventLocation).icon(BitmapDescriptorFactory
-              .fromBitmap(createDrawableFromView(context,markerView))));
-      marker.setTag(currentPosition);
-      currentPosition++;
-    }
-  }
+
 
   class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -233,21 +221,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
   interface OnItemClickListener {
 
     void onItemClick(Event event, View view);
-  }
-
-  public static Bitmap createDrawableFromView(Context context, View view) {
-    DisplayMetrics displayMetrics = new DisplayMetrics();
-    ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-    view.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-    view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
-    view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
-    view.buildDrawingCache();
-
-    //Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-    Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(),view.getMeasuredHeight(), Config.ARGB_8888);
-    Canvas canvas = new Canvas(bitmap);
-    view.draw(canvas);
-    return bitmap;
   }
 
 }

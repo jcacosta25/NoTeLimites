@@ -1,6 +1,9 @@
 package com.burocreativo.notelimites.screens.home;
 
+import static com.burocreativo.notelimites.utils.Utils.createDrawableFromView;
+
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
@@ -38,12 +41,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.annimon.stream.Stream;
 import com.burocreativo.notelimites.NTLApplication;
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.io.ServiceGenerator;
+import com.burocreativo.notelimites.io.models.events.Category;
 import com.burocreativo.notelimites.io.models.events.Data;
 import com.burocreativo.notelimites.io.models.events.Event;
 import com.burocreativo.notelimites.io.models.events.EventsList;
+import com.burocreativo.notelimites.io.models.events.Venues;
 import com.burocreativo.notelimites.io.models.locations.Locations;
 import com.burocreativo.notelimites.io.models.user.UserResponse;
 import com.burocreativo.notelimites.screens.adapters.EventListAdapter;
@@ -59,7 +65,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -69,6 +74,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import de.morrox.fontinator.FontTextView;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -132,7 +138,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     eventList = (RecyclerView) findViewById(R.id.eventList);
     String[] categoryList = getResources().getStringArray(R.array.Category);
     for (String category : categoryList) {
-      tabs.addTab(tabs.newTab().setText(category));
+
     }
     tabs.setSelectedTabIndicatorColor(getResources().getColor(R.color.tab_selected));
     // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -141,7 +147,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     mapFragment.getMapAsync(this);
     tabs.setScrollX(tabs.getWidth());
     tabs.setSmoothScrollingEnabled(true);
-    new Handler().postDelayed(() -> tabs.getTabAt(3).select(),100);
+    //new Handler().postDelayed(() -> tabs.getTabAt(3).select(),100);
     tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
       @Override
       public void onTabSelected(TabLayout.Tab tab) {
@@ -226,6 +232,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
       @Override
       public void onResponse(Call<EventsList> call, Response<EventsList> response) {
         if (response.isSuccessful()) {
+          setMarkers(response.body().getVenues());
+          setCategories(response.body().getCategories());
           adapter = new EventListAdapter(response.body().getEvents(), HomeActivity.this);
           eventList.setAdapter(adapter);
           eventList.setLayoutManager(layoutManager);
@@ -275,6 +283,30 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
       }
     });
 
+  }
+
+  public void setMarkers(List<Venues> venuesList) {
+    mMap.clear();
+    int currentPosition = 0;
+    for (Venues venue : venuesList) {
+      LatLng eventLocation = new LatLng(Double.parseDouble(venue.getVenueLat()),
+          Double.parseDouble(venue.getVenueLng()));
+      View markerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
+      FontTextView numTxt = (FontTextView) markerView.findViewById(R.id.marker_id );
+      numTxt.setText(String.valueOf(currentPosition));
+      Marker marker = mMap.addMarker(
+          new MarkerOptions().
+              title(venue.getVenueName())
+              .position(eventLocation).icon(BitmapDescriptorFactory
+              .fromBitmap(createDrawableFromView(this,markerView))));
+      marker.setTag(currentPosition);
+      currentPosition++;
+    }
+  }
+
+  public void setCategories(List<Category> categoryList){
+    Stream.of(categoryList)
+        .forEach(category -> tabs.addTab(tabs.newTab().setText(category.getCategoryName())));
   }
 
   public void startDrawer() {
