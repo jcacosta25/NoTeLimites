@@ -18,3 +18,36 @@
 
 -keep class br.com.mauker.MsvAuthority
 -keepclassmembers class br.com.mauker.** { *; }
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
+-dontnote okhttp3.**
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+-printmapping mapping.txt
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+
+# Okio
+-keep class sun.misc.Unsafe { *; }
+-dontwarn java.nio.file.*
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+-keep class org.parceler.Parceler$$Parcels
+-dontwarn java.lang.invoke.*
+-keep public class * implements com.bumptech.glide.module.GlideModule
+ -keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+     **[] $VALUES;
+     public *;
+ }

@@ -153,7 +153,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
       public void onTabSelected(TabLayout.Tab tab) {
 
         if (adapter != null) {
-          adapter.filter(tab.getPosition());
+
+          adapter.filter(((int) tab.getTag()));
         }
 
         View selectedChild = tabs.getChildAt(tab.getPosition());
@@ -291,22 +292,23 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     for (Venues venue : venuesList) {
       LatLng eventLocation = new LatLng(Double.parseDouble(venue.getVenueLat()),
           Double.parseDouble(venue.getVenueLng()));
-      View markerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
-      FontTextView numTxt = (FontTextView) markerView.findViewById(R.id.marker_id );
+      View markerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+          .inflate(R.layout.custom_marker, null);
+      FontTextView numTxt = (FontTextView) markerView.findViewById(R.id.marker_id);
       numTxt.setText(String.valueOf(currentPosition));
       Marker marker = mMap.addMarker(
           new MarkerOptions().
               title(venue.getVenueName())
               .position(eventLocation).icon(BitmapDescriptorFactory
-              .fromBitmap(createDrawableFromView(this,markerView))));
+              .fromBitmap(createDrawableFromView(this, markerView))));
       marker.setTag(currentPosition);
       currentPosition++;
     }
   }
 
-  public void setCategories(List<Category> categoryList){
+  public void setCategories(List<Category> categoryList) {
     Stream.of(categoryList)
-        .forEach(category -> tabs.addTab(tabs.newTab().setText(category.getCategoryName())));
+        .forEach(category -> tabs.addTab(tabs.newTab().setText(category.getCategoryName()).setTag(category.getCategoryID())));
   }
 
   public void startDrawer() {

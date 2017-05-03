@@ -39,156 +39,171 @@ import retrofit2.Response;
 
 public class PageEventActivity extends AppCompatActivity {
 
-    private RecyclerView eventList;
-    private Toolbar toolbar;
-    private ActivityPageEventBinding binding;
-    BranchUniversalObject branchUniversalObject;
-    LinkProperties linkProperties;
+  private RecyclerView eventList;
+  private Toolbar toolbar;
+  private ActivityPageEventBinding binding;
+  BranchUniversalObject branchUniversalObject;
+  LinkProperties linkProperties;
+  private Event event;
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_page_event);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    binding = DataBindingUtil.setContentView(this, R.layout.activity_page_event);
+    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar.setTitle("");
+    setSupportActionBar(toolbar);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_left);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
-        eventList = (RecyclerView) findViewById(R.id.moreEventPlaceList);
+    final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_left);
+    getSupportActionBar().setHomeAsUpIndicator(upArrow);
+    eventList = (RecyclerView) findViewById(R.id.moreEventPlaceList);
 
-        String follower = NTLApplication.tinyDB.getString("user_id");
-        if(follower.equals("")){
-            follower = null;
+    String follower = NTLApplication.tinyDB.getString("user_id");
+    if (follower.equals("")) {
+      follower = null;
+    }
+    Call<Event> call = ServiceGenerator.getApiService()
+        .getEvent(this.getIntent().getStringExtra("EventId"), ServiceGenerator.authToken, follower);
+    call.enqueue(new Callback<Event>() {
+      @Override
+      public void onResponse(Call<Event> call, Response<Event> response) {
+        if (response.isSuccessful()) {
+          event = response.body();
+          binding.setEvent(event);
+          RecView(response.body().getVenueEvents());
+          branchUniversalObject = new BranchUniversalObject()
+              .setCanonicalIdentifier(binding.getEvent().getEventUID())
+              .setTitle(binding.getEvent().getEventName())
+              .setContentDescription(binding.getEvent().getDescription())
+              .setContentImageUrl(binding.getEvent().getImageURL())
+              .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)
+              .addContentMetadata("event", String.valueOf(binding.getEvent().getEventID()));
+
+          linkProperties = new LinkProperties()
+              .setChannel("facebook")
+              .setFeature("sharing")
+              .addControlParameter("$desktop_url",
+                  "http://www.notelimites.com/eventos/" + binding.getEvent().getEventName()
+                      .toLowerCase().replace(' ', '-'))
+              .addControlParameter("$ios_url",
+                  "http://www.notelimites.com/eventos/" + binding.getEvent().getEventName()
+                      .toLowerCase().replace(' ', '-'));
+
+          branchUniversalObject.generateShortUrl(PageEventActivity.this, linkProperties,
+              (url, error) -> {
+                if (error == null) {
+                  Log.i("MyApp", "got my Branch link to share: " + url);
+                }
+              });
         }
-        Call<Event> call = ServiceGenerator.getApiService().getEvent(this.getIntent().getStringExtra("EventId"), ServiceGenerator.authToken,follower);
-        call.enqueue(new Callback<Event>() {
-            @Override
-            public void onResponse(Call<Event> call, Response<Event> response) {
-                if(response.isSuccessful()) {
-                    Event event = response.body();
-                    binding.setEvent(event);
-                    RecView(response.body().getVenueEvents());
-                    branchUniversalObject = new BranchUniversalObject()
-                            .setCanonicalIdentifier(binding.getEvent().getEventUID())
-                            .setTitle(binding.getEvent().getEventName())
-                            .setContentDescription(binding.getEvent().getDescription())
-                            .setContentImageUrl(binding.getEvent().getImageURL())
-                            .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)
-                            .addContentMetadata("event",String.valueOf(binding.getEvent().getEventID()));
+      }
 
-                    linkProperties = new LinkProperties()
-                            .setChannel("facebook")
-                            .setFeature("sharing")
-                            .addControlParameter("$desktop_url","http://www.notelimites.com/eventos/"+binding.getEvent().getEventName().toLowerCase().replace(' ','-'))
-                            .addControlParameter("$ios_url","http://www.notelimites.com/eventos/"+binding.getEvent().getEventName().toLowerCase().replace(' ','-'));
+      @Override
+      public void onFailure(Call<Event> call, Throwable t) {
 
-                    branchUniversalObject.generateShortUrl(PageEventActivity.this, linkProperties, new Branch.BranchLinkCreateListener() {
-                        @Override
-                        public void onLinkCreate(String url, BranchError error) {
-                            if (error == null) {
-                                Log.i("MyApp", "got my Branch link to share: " + url);
-                            }
-                        }
-                    });
-                }
-            }
+      }
+    });
 
-            @Override
-            public void onFailure(Call<Event> call, Throwable t) {
+    ShareSheetStyle shareSheetStyle = new ShareSheetStyle(PageEventActivity.this, "Mira!",
+        "Este Evento: ")
+        .setCopyUrlStyle(getResources().getDrawable(android.R.drawable.ic_menu_send), "Copiar",
+            "Copiado")
+        .setMoreOptionStyle(getResources().getDrawable(android.R.drawable.ic_menu_search),
+            "Ver Mas")
+        .addPreferredSharingOption(SharingHelper.SHARE_WITH.FACEBOOK)
+        .addPreferredSharingOption(SharingHelper.SHARE_WITH.EMAIL)
+        .setAsFullWidthStyle(true)
+        .setSharingTitle("compartir con");
 
-            }
-        });
+    findViewById(R.id.share)
+        .setOnClickListener(view -> branchUniversalObject.showShareSheet(PageEventActivity.this,
+            linkProperties,
+            shareSheetStyle,
+            new Branch.BranchLinkShareListener() {
+              @Override
+              public void onShareLinkDialogLaunched() {
+              }
 
-        ShareSheetStyle shareSheetStyle = new ShareSheetStyle(PageEventActivity.this, "Mira!", "Este Evento: ")
-                .setCopyUrlStyle(getResources().getDrawable(android.R.drawable.ic_menu_send), "Copiar", "Copiado")
-                .setMoreOptionStyle(getResources().getDrawable(android.R.drawable.ic_menu_search), "Ver Mas")
-                .addPreferredSharingOption(SharingHelper.SHARE_WITH.FACEBOOK)
-                .addPreferredSharingOption(SharingHelper.SHARE_WITH.EMAIL)
-                .setAsFullWidthStyle(true)
-                .setSharingTitle("compartir con");
+              @Override
+              public void onShareLinkDialogDismissed() {
+              }
 
-        findViewById(R.id.share).setOnClickListener(view -> branchUniversalObject.showShareSheet(PageEventActivity.this,
-                linkProperties,
-                shareSheetStyle,
-                new Branch.BranchLinkShareListener() {
-                    @Override
-                    public void onShareLinkDialogLaunched() {
-                    }
-                    @Override
-                    public void onShareLinkDialogDismissed() {
-                    }
-                    @Override
-                    public void onLinkShareResponse(String sharedLink, String sharedChannel, BranchError error) {
-                    }
-                    @Override
-                    public void onChannelSelected(String channelName) {
-                    }
-                }));
+              @Override
+              public void onLinkShareResponse(String sharedLink, String sharedChannel,
+                  BranchError error) {
+              }
 
-        findViewById(R.id.page_place_location_txt).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PageEventActivity.this,PagePlaceActivity.class);
-                intent.putExtra("VenueId",String.valueOf(binding.getEvent().getVenueID()));
-                startActivity(intent);
-            }
-        });
+              @Override
+              public void onChannelSelected(String channelName) {
+              }
+            }));
 
-        Button like = (Button) findViewById(R.id.likeButton);
-        like.setOnClickListener(view -> {
-            if(NTLApplication.tinyDB.getObject("user", UserResponse.class) == null){
-                Intent intent = new Intent(PageEventActivity.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-            } else {
-                Call<EventFollowed> followedCall;
-                if(!binding.getEvent().getFollowed()) {
-                    followedCall= ServiceGenerator.getApiService().followEvent(new Follow(NTLApplication.tinyDB.getString("user_id"),String.valueOf(binding.getEvent().getEventID())));
-                } else {
-                    followedCall = ServiceGenerator.getApiService().unFollowEvent(new Follow(NTLApplication.tinyDB.getString("user_id"),String.valueOf(binding.getEvent().getEventID())));
-                }
+    findViewById(R.id.page_place_location_txt).setOnClickListener(view -> {
+      Intent intent = new Intent(PageEventActivity.this, PagePlaceActivity.class);
+      intent.putExtra("VenueId", String.valueOf(binding.getEvent().getVenueID()));
+      startActivity(intent);
+    });
 
-                followedCall.enqueue(new Callback<EventFollowed>() {
-                    @Override
-                    public void onResponse(Call<EventFollowed> call1, Response<EventFollowed> response) {
-                        if(response.isSuccessful()){
-                            Drawable follow;
-                            if(response.body().getFollowed()){
-                                follow = getResources().getDrawable(R.drawable.ic_favorite);
-                            } else {
-                                follow = getResources().getDrawable(R.drawable.ic_favorite_border);
-                            }
-                            like.setCompoundDrawables(follow,null,null,null);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<EventFollowed> call1, Throwable t) {
-
-                    }
-                });
-
-            }
-        });
-
-    }
-
-    public void RecView(List<VenueEvents> venueEvents){
-        eventList.setAdapter(new PageListAdapter(venueEvents,getApplicationContext()));
-        eventList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        eventList.setHasFixedSize(true);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+    Button like = (Button) findViewById(R.id.likeButton);
+    like.setOnClickListener(view -> {
+      if (NTLApplication.tinyDB.getObject("user", UserResponse.class) == null) {
+        Intent intent = new Intent(PageEventActivity.this, StartActivity.class)
+            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+      } else {
+        Call<EventFollowed> followedCall;
+        if (!binding.getEvent().getFollowed()) {
+          followedCall = ServiceGenerator.getApiService().followEvent(
+              new Follow(NTLApplication.tinyDB.getString("user_id"),
+                  String.valueOf(binding.getEvent().getEventID())));
+        } else {
+          followedCall = ServiceGenerator.getApiService().unFollowEvent(
+              new Follow(NTLApplication.tinyDB.getString("user_id"),
+                  String.valueOf(binding.getEvent().getEventID())));
         }
 
-        return super.onOptionsItemSelected(item);
+        followedCall.enqueue(new Callback<EventFollowed>() {
+          @Override
+          public void onResponse(Call<EventFollowed> call1, Response<EventFollowed> response) {
+            if (response.isSuccessful()) {
+              Drawable follow;
+              if (response.body().getFollowed()) {
+                follow = getResources().getDrawable(R.drawable.ic_favorite);
+              } else {
+                follow = getResources().getDrawable(R.drawable.ic_favorite_border);
+              }
+              like.setCompoundDrawables(follow, null, null, null);
+            }
+          }
+
+          @Override
+          public void onFailure(Call<EventFollowed> call1, Throwable t) {
+
+          }
+        });
+
+      }
+    });
+
+  }
+
+  public void RecView(List<VenueEvents> venueEvents) {
+    eventList.setAdapter(new PageListAdapter(venueEvents, getApplicationContext()));
+    eventList
+        .setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    eventList.setHasFixedSize(true);
+  }
+
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+
+      case android.R.id.home:
+        onBackPressed();
+        return true;
     }
+
+    return super.onOptionsItemSelected(item);
+  }
 }
