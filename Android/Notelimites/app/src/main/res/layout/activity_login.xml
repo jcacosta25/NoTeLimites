@@ -11,7 +11,7 @@
   android:paddingLeft="@dimen/activity_horizontal_margin"
   android:paddingRight="@dimen/activity_horizontal_margin"
   android:background="@drawable/back_inicio"
-  tools:context=".login.StartActivity">
+  tools:context=".screens.login.StartActivity">
 
   <ImageView
     android:id="@+id/login_logo"
@@ -21,7 +21,7 @@
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
     android:src="@drawable/logo"
-    android:tint="@color/white"/>
+    android:tint="@android:color/white"/>
 
   <de.morrox.fontinator.FontTextView
     android:id="@+id/login_txt1"

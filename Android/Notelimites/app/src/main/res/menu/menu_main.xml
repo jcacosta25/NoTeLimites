@@ -10,5 +10,12 @@
         android:orderInCategory="100"
         android:icon="@drawable/ic_my_location"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/calendar"
+        android:title=""
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_event"
+        app:showAsAction="ifRoom"
+      />
 
 </menu>

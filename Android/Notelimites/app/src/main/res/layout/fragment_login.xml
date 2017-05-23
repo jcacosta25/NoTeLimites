@@ -16,7 +16,7 @@
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
     android:src="@drawable/logo"
-    android:tint="@color/white"/>
+    android:tint="@android:color/white"/>
 
   <com.facebook.login.widget.LoginButton
     android:id="@+id/login_button_fb"

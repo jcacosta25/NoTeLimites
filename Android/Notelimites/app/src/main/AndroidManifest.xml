@@ -32,13 +32,6 @@
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
 
-        <provider
-            android:name="br.com.mauker.materialsearchview.db.HistoryProvider"
-            android:authorities="br.com.mauker.materialsearchview.searchhistorydatabase"
-            android:exported="false"
-            android:protectionLevel="signature"
-            android:syncable="true" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

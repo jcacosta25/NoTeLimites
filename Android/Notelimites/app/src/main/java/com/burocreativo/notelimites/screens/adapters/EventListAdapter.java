@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import de.morrox.fontinator.FontTextView;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -62,7 +63,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     this.context = context;
     this.filterList = new ArrayList<>();
     this.filterList.addAll(eventList);
-    //setMarkers();
   }
 
   @Override
@@ -177,24 +177,28 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             filterList.add(event);
             notifyDataSetChanged();
           });
-     /* if (cat > 3) {
-        Stream.of(eventList)
-            .filter(event -> event.getEventtypeID() == cat - 1)
-            .forEach(event -> {
-              filterList.add(event);
-              notifyDataSetChanged();
-            });
-      } else {
-        Stream.of(eventList)
-            .filter(event -> event.getEventtypeID() == cat + 1)
-            .forEach(event -> {
-              filterList.add(event);
-              notifyDataSetChanged();
-            });
-      }*/
-
     }
-    //setMarkers();
+  }
+
+  public void filter(Date from, Date to, final  int cat){
+    filterList = new ArrayList<>();
+    notifyDataSetChanged();
+    if(cat == 0){
+      Stream.of(eventList)
+          .filter(event -> event.getInitDate().after(from) && event.getInitDate().before(to) || event.getInitDate().equals(from) || event.getInitDate().equals(to))
+          .forEach(event -> {
+            filterList.add(event);
+            notifyDataSetChanged();
+          });
+    } else {
+      Stream.of(eventList)
+          .filter(event -> event.getEventtypeID() == cat +1)
+          .filter(event -> event.getInitDate().after(from) && event.getInitDate().before(to))
+          .forEach(event -> {
+            filterList.add(event);
+            notifyDataSetChanged();
+          });
+    }
   }
 
 

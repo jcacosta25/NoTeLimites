@@ -23,6 +23,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -59,6 +61,7 @@ import com.burocreativo.notelimites.screens.login.StartActivity;
 import com.burocreativo.notelimites.screens.page.PageEventActivity;
 import com.burocreativo.notelimites.screens.page.PagePlaceActivity;
 import com.burocreativo.notelimites.screens.profile.ProfileActivity;
+import com.burocreativo.notelimites.utils.DateRangePickerFragment;
 import com.burocreativo.notelimites.utils.SearchFeedResultsAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -75,6 +78,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import de.morrox.fontinator.FontTextView;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -90,19 +96,18 @@ import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
     GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-    SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
+    SearchView.OnQueryTextListener, SearchView.OnSuggestionListener,DateRangePickerFragment.OnDateRangeSelectedListener  {
 
   public static GoogleMap mMap;
   private RecyclerView eventList;
   private Toolbar mToolbar;
   private TabLayout tabs;
-  private String[] mTitles;
   private DrawerLayout mDrawerLayout;
   private EventListAdapter adapter;
   private ActionBarDrawerToggle mDrawerToggle;
   private ListView mDrawerList;
   private GoogleApiClient googleApiClient;
-  private View currentFocusedLayout, oldFocusedLayout;
+  private View currentFocusedLayout;
   private String cityName;
   private TextView searchCityTxt;
   public static String[] columns;
@@ -113,13 +118,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
   SearchFeedResultsAdapter searchFeedResultsAdapter;
   private float ZOOM_TO = 15.0f;
   private float FIRST_ZOOM = 11.0f;
+  private int category = 0;
+  DateRangePickerFragment dateRangePickerFragment;
+  private SwipeRefreshLayout swipeRefreshLayout;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_maps);
     cityName = getIntent().getStringExtra("city");
-
+    dateRangePickerFragment = DateRangePickerFragment.newInstance(HomeActivity.this,false);
+    swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
     if (googleApiClient == null) {
       googleApiClient = new GoogleApiClient.Builder(this)
           .addConnectionCallbacks(this)
@@ -136,25 +145,21 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     tabs = (TabLayout) findViewById(R.id.tabs);
     eventList = (RecyclerView) findViewById(R.id.eventList);
-    String[] categoryList = getResources().getStringArray(R.array.Category);
-    for (String category : categoryList) {
 
-    }
     tabs.setSelectedTabIndicatorColor(getResources().getColor(R.color.tab_selected));
-    // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
         .findFragmentById(R.id.map);
     mapFragment.getMapAsync(this);
     tabs.setScrollX(tabs.getWidth());
     tabs.setSmoothScrollingEnabled(true);
-    //new Handler().postDelayed(() -> tabs.getTabAt(3).select(),100);
     tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
       @Override
       public void onTabSelected(TabLayout.Tab tab) {
 
         if (adapter != null) {
-
-          adapter.filter(((int) tab.getTag()));
+          category = ((int) tab.getTag());
+          adapter.filter(category);
         }
 
         View selectedChild = tabs.getChildAt(tab.getPosition());
@@ -209,6 +214,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         cursor, columns, null, -1000);
     searchView.setSuggestionsAdapter(searchFeedResultsAdapter);
 
+    swipeRefreshLayout.setOnRefreshListener(() -> {
+      swipeRefreshLayout.setRefreshing(true);
+      RecView(lat,lng);
+    });
+
   }
 
 
@@ -232,6 +242,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     Callback<EventsList> callback = new Callback<EventsList>() {
       @Override
       public void onResponse(Call<EventsList> call, Response<EventsList> response) {
+        swipeRefreshLayout.setRefreshing(false);
         if (response.isSuccessful()) {
           setMarkers(response.body().getVenues());
           setCategories(response.body().getCategories());
@@ -375,13 +386,19 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getItemId() == R.id.my_location) {
-      LatLng latlng = new LatLng(lat, lng);
-      CameraPosition cameraPosition = new CameraPosition.Builder()
-          .target(latlng)              // Center Set
-          .zoom(FIRST_ZOOM)                // Zoom
-          .build();
-      mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+    switch (item.getItemId()){
+      case R.id.my_location:
+        LatLng latlng = new LatLng(lat, lng);
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+            .target(latlng)              // Center Set
+            .zoom(FIRST_ZOOM)                // Zoom
+            .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        break;
+      case R.id.calendar:
+        dateRangePickerFragment.show(getSupportFragmentManager(),"datePicker");
+        break;
     }
     return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 
@@ -394,6 +411,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
       lng = Double.parseDouble(getIntent().getStringExtra("lng"));
       cityName = getIntent().getStringExtra("city");
       RecView(lat, lng);
+
     } else {
       if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
           != PackageManager.PERMISSION_GRANTED
@@ -603,6 +621,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
     return true;
+  }
+
+  @Override
+  public void onDateRangeSelected(int startDay, int startMonth, int startYear, int endDay,
+      int endMonth, int endYear) {
+    Date from = new GregorianCalendar(startYear, startMonth, startDay).getTime();
+    Date to = new GregorianCalendar(endYear,endMonth,endDay).getTime();
+    if(adapter != null){
+      adapter.filter(from,to,category);
+    }
   }
 
   private class DrawerItemClickListener implements ListView.OnItemClickListener {
