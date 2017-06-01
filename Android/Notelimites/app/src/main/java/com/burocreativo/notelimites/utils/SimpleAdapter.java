@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.SimpleView
 
   private final Context mContext;
   private List<Discover> mData;
+  private OnDiscoverItemClickListener listener;
 
   public void add(Discover s,int position) {
     position = position == -1 ? getItemCount()  : position;
@@ -42,10 +44,15 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.SimpleView
       super(view);
       title = (TextView) view.findViewById(R.id.simple_text);
     }
+
+    public void bind(final Discover item,OnDiscoverItemClickListener listener){
+      itemView.setOnClickListener(v -> listener.onItemClick(item));
+    }
   }
 
-  public SimpleAdapter(Context context, List<Discover> data) {
+  public SimpleAdapter(Context context, List<Discover> data,OnDiscoverItemClickListener listener) {
     mContext = context;
+    this.listener = listener;
     if (data != null)
       mData = new ArrayList<Discover>(data);
     else mData = new ArrayList<Discover>();
@@ -59,16 +66,15 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.SimpleView
   @Override
   public void onBindViewHolder(SimpleViewHolder holder, final int position) {
     holder.title.setText(mData.get(position).getTitle());
-    holder.title.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Toast.makeText(mContext,"Position ="+position,Toast.LENGTH_SHORT).show();
-      }
-    });
+    holder.bind(mData.get(position),listener);
   }
 
   @Override
   public int getItemCount() {
     return mData.size();
+  }
+
+  public interface OnDiscoverItemClickListener{
+    void onItemClick(Discover item);
   }
 }

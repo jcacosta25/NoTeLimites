@@ -18,6 +18,7 @@ import com.burocreativo.notelimites.io.ServiceGenerator;
 import com.burocreativo.notelimites.io.models.discover.Discover;
 import com.burocreativo.notelimites.io.models.discover.DiscoverResponse;
 import com.burocreativo.notelimites.utils.SimpleAdapter;
+import com.burocreativo.notelimites.utils.SimpleAdapter.OnDiscoverItemClickListener;
 import com.burocreativo.notelimites.utils.SimpleSectionedRecyclerViewAdapter;
 import com.burocreativo.notelimites.utils.SimpleSectionedRecyclerViewAdapter.Section;
 import java.util.ArrayList;
@@ -43,48 +44,52 @@ public class SearchDiscoverFragment extends DialogFragment {
   public SearchDiscoverFragment() {
   }
 
-  public static SearchDiscoverFragment newInstance(Context context, String query) {
+  public static SearchDiscoverFragment newInstance(Context context, String query,OnDiscoverElementSelectedListener listener) {
     SearchDiscoverFragment searchDiscoverFragment = new SearchDiscoverFragment();
-    searchDiscoverFragment.initialize(context, query);
+    searchDiscoverFragment.initialize(context, query,listener);
     return searchDiscoverFragment;
   }
 
-  public void initialize(Context context, String query) {
+  public void initialize(Context context, String query,OnDiscoverElementSelectedListener listener) {
     this.context = context;
     this.query = query;
     this.callback = new Callback<DiscoverResponse>() {
       @Override
       public void onResponse(Call<DiscoverResponse> call, Response<DiscoverResponse> response) {
         int size = 0;
-        Stream.of(response.body().getEvents())
-            .forEach(
-                event -> discovers.add(new Discover(event.getEventID(), event.getEventName())));
-        Stream.of(response.body().getVenues())
-            .forEach(venue ->
-                discovers.add(new Discover("venue", venue.getVenueID(), venue.getVenueName(),
-                    venue.getVenueLat(),
-                    venue.getVenueLng())));
-        Stream.of(response.body().getLocations())
-            .forEach(locationsItem -> discovers
-                .add(new Discover("location", locationsItem.getLocationID(),
-                    locationsItem.getLocationName(),
-                    locationsItem.getLocationLat(), locationsItem.getLocationLng())));
-
         if (response.body().getEvents().size() > 0) {
+          Stream.of(response.body().getEvents())
+              .forEach(
+                  event -> discovers.add(new Discover(event.getEventID(), event.getEventName())));
           sections.add(new SimpleSectionedRecyclerViewAdapter.Section(size, "Eventos"));
           size = response.body().getEvents().size();
         }
         if (response.body().getLocations().size() > 0) {
+          Stream.of(response.body().getLocations())
+              .forEach(locationsItem -> discovers
+                  .add(new Discover("location", locationsItem.getLocationID(),
+                      locationsItem.getLocationName(),
+                      locationsItem.getLocationLat(), locationsItem.getLocationLng())));
           sections.add(
               new SimpleSectionedRecyclerViewAdapter.Section(size,
                   "Ciudades"));
           size = +response.body().getLocations().size();
         }
         if (response.body().getVenues().size() > 0) {
+          Stream.of(response.body().getVenues())
+              .forEach(venue ->
+                  discovers.add(new Discover("venue", venue.getVenueID(), venue.getVenueName(),
+                      venue.getVenueLat(),
+                      venue.getVenueLng())));
           sections.add(new SimpleSectionedRecyclerViewAdapter.Section(size, "Arenas"));
         }
 
-        adapter = new SimpleAdapter(getContext(), discovers);
+        adapter = new SimpleAdapter(getContext(), discovers,
+            item -> {
+              listener.onDiscoverElementSelected(item.getType(),item.getId(),
+                  item.getLat(),item.getLng(),item.getTitle());
+              dismiss();
+        });
 
         SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections
             .size()];
@@ -121,20 +126,16 @@ public class SearchDiscoverFragment extends DialogFragment {
     discoverList.setLayoutManager(new LinearLayoutManager(getActivity()));
     discoverList
         .addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
-
-    //adapter = new SimpleAdapter(getContext(),sCheeseStrings);
-
     Call<DiscoverResponse> call  = ServiceGenerator.getApiService().getDiscover(query);
     call.enqueue(callback);
-    //Add your adapter to the sectionAdapter
 
     return root;
   }
 
-  public interface DiscoverElementSelected {
-
-    void itemSelected();
+  public interface OnDiscoverElementSelectedListener {
+    void onDiscoverElementSelected(String type, int id, String lat, String lng,String cityName);
   }
+
 
   @Override
   public void onStart() {

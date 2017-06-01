@@ -65,6 +65,7 @@ import com.burocreativo.notelimites.screens.page.PagePlaceActivity;
 import com.burocreativo.notelimites.screens.profile.ProfileActivity;
 import com.burocreativo.notelimites.utils.DateRangePickerFragment;
 import com.burocreativo.notelimites.utils.SearchFeedResultsAdapter;
+import com.burocreativo.notelimites.utils.SimpleAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -98,7 +99,7 @@ import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
     GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-    SearchView.OnQueryTextListener, SearchView.OnSuggestionListener,DateRangePickerFragment.OnDateRangeSelectedListener  {
+    SearchView.OnQueryTextListener, SearchView.OnSuggestionListener,DateRangePickerFragment.OnDateRangeSelectedListener,SearchDiscoverFragment.OnDiscoverElementSelectedListener {
 
   public static GoogleMap mMap;
   private RecyclerView eventList;
@@ -530,7 +531,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   @Override
   public boolean onQueryTextSubmit(String query) {
-    discoverFragment = SearchDiscoverFragment.newInstance(this,query);
+    discoverFragment = SearchDiscoverFragment.newInstance(this,query,HomeActivity.this);
     discoverFragment.show(getSupportFragmentManager(),"discover");
     /*if (query.length() > 2) {
       loadLocations(query);
@@ -585,7 +586,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
   @Override
   public boolean onQueryTextChange(String newText) {
     if (newText.length() > 2) {
-      loadLocations(newText);
+      //loadLocations(newText);
     }
     return true;
   }
@@ -636,6 +637,38 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     if(adapter != null){
       adapter.filter(from,to,category);
     }
+  }
+
+  @Override
+  public void onDiscoverElementSelected(String type, int id, String lat, String lng,String name) {
+      switch (type){
+        case "event":
+          Intent intent = new Intent(this, PageEventActivity.class);
+          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+          intent.putExtra("EventId", String.valueOf(id));
+          startActivity(intent);
+          break;
+        case "location":
+          mMap.clear();
+          searchCityTxt.setText(name);
+          searchCityTxt.setText(name);
+          searchView.setQuery(name, false);
+          searchView.setQueryHint(name);
+          LatLng latlng = new LatLng(Double.parseDouble(lat),Double.parseDouble(lng));
+          CameraPosition cameraPosition = new CameraPosition.Builder()
+              .target(latlng)              // Center Set
+              .zoom(FIRST_ZOOM)                // Zoom
+              .build();
+          mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+          RecView(latlng.latitude,latlng.longitude);
+          break;
+        case "venue":
+          Intent i = new Intent(this, PagePlaceActivity.class);
+          i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+          i.putExtra("VenueId", String.valueOf(id));
+          startActivity(i);
+          break;
+      }
   }
 
   private class DrawerItemClickListener implements ListView.OnItemClickListener {
