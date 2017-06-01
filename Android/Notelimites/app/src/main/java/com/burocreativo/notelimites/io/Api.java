@@ -1,5 +1,6 @@
 package com.burocreativo.notelimites.io;
 
+import com.burocreativo.notelimites.io.models.discover.DiscoverResponse;
 import com.burocreativo.notelimites.io.models.events.Data;
 import com.burocreativo.notelimites.io.models.events.Event;
 import com.burocreativo.notelimites.io.models.events.EventsList;
@@ -66,5 +67,8 @@ public interface Api {
 
     @GET("relationvenues?auth_token=i2gShFXzWnLF2A7f8_aQ")
     Call<UserFollowedVenues> userFollowedVenues(@Query("follower_id") String follower);
+
+    @GET("search?auth_token=i2gShFXzWnLF2A7f8_aQ")
+    Call<DiscoverResponse> getDiscover(@Query("q") String query);
 
 }

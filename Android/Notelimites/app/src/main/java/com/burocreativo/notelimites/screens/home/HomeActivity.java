@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -57,6 +58,7 @@ import com.burocreativo.notelimites.io.models.user.UserResponse;
 import com.burocreativo.notelimites.screens.adapters.EventListAdapter;
 import com.burocreativo.notelimites.screens.home.adapters.DrawerItem;
 import com.burocreativo.notelimites.screens.home.adapters.DrawerListAdapter;
+import com.burocreativo.notelimites.screens.home.fragments.SearchDiscoverFragment;
 import com.burocreativo.notelimites.screens.login.StartActivity;
 import com.burocreativo.notelimites.screens.page.PageEventActivity;
 import com.burocreativo.notelimites.screens.page.PagePlaceActivity;
@@ -120,6 +122,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
   private float FIRST_ZOOM = 11.0f;
   private int category = 0;
   DateRangePickerFragment dateRangePickerFragment;
+  SearchDiscoverFragment discoverFragment;
   private SwipeRefreshLayout swipeRefreshLayout;
 
   @Override
@@ -527,9 +530,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   @Override
   public boolean onQueryTextSubmit(String query) {
-    if (query.length() > 2) {
+    discoverFragment = SearchDiscoverFragment.newInstance(this,query);
+    discoverFragment.show(getSupportFragmentManager(),"discover");
+    /*if (query.length() > 2) {
       loadLocations(query);
-    }
+    }*/
     return true;
   }
 

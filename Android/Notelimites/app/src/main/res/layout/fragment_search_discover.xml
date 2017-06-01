@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+  <android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    >
+
+    <android.support.v7.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="?attr/colorPrimary"
+      android:minHeight="?attr/actionBarSize"
+      android:title=""
+      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+      app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+      <ImageView
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:tint="@android:color/white"
+        tools:ignore="contentDescription"
+        />
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="50dp">
+
+      <android.support.v7.widget.SearchView
+        android:id="@+id/search_discover"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"/>
+
+      <TextView
+        android:id="@+id/search_city_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="62dp"
+        android:layout_marginLeft="62dp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        />
+    </RelativeLayout>
+
+  </android.support.design.widget.AppBarLayout>
+
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/discover_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="8dp"
+    android:clipToPadding="false"
+    android:orientation="vertical"/>
+
+</LinearLayout>
