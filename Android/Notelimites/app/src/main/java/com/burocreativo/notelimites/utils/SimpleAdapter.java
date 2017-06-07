@@ -37,6 +37,11 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.SimpleView
     }
   }
 
+  public void removeAll(){
+    mData.clear();
+    notifyDataSetChanged();
+  }
+
   public static class SimpleViewHolder extends RecyclerView.ViewHolder {
     public final TextView title;
 

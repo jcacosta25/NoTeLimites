@@ -17,15 +17,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,14 +40,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.annimon.stream.Stream;
 import com.burocreativo.notelimites.NTLApplication;
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.io.ServiceGenerator;
 import com.burocreativo.notelimites.io.models.events.Category;
 import com.burocreativo.notelimites.io.models.events.Data;
-import com.burocreativo.notelimites.io.models.events.Event;
 import com.burocreativo.notelimites.io.models.events.EventsList;
 import com.burocreativo.notelimites.io.models.events.Venues;
 import com.burocreativo.notelimites.io.models.locations.Locations;
@@ -65,7 +60,6 @@ import com.burocreativo.notelimites.screens.page.PagePlaceActivity;
 import com.burocreativo.notelimites.screens.profile.ProfileActivity;
 import com.burocreativo.notelimites.utils.DateRangePickerFragment;
 import com.burocreativo.notelimites.utils.SearchFeedResultsAdapter;
-import com.burocreativo.notelimites.utils.SimpleAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -79,27 +73,25 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import de.morrox.fontinator.FontTextView;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import org.json.JSONException;
-
+import io.branch.referral.Branch;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import io.branch.referral.Branch;
+import org.json.JSONException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback,
     GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-    SearchView.OnQueryTextListener, SearchView.OnSuggestionListener,DateRangePickerFragment.OnDateRangeSelectedListener,SearchDiscoverFragment.OnDiscoverElementSelectedListener {
+    SearchView.OnQueryTextListener, SearchView.OnSuggestionListener,
+    DateRangePickerFragment.OnDateRangeSelectedListener,
+    SearchDiscoverFragment.OnDiscoverElementSelectedListener {
 
   public static GoogleMap mMap;
   private RecyclerView eventList;
@@ -131,7 +123,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_maps);
     cityName = getIntent().getStringExtra("city");
-    dateRangePickerFragment = DateRangePickerFragment.newInstance(HomeActivity.this,false);
+    dateRangePickerFragment = DateRangePickerFragment.newInstance(HomeActivity.this, false);
     swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
     if (googleApiClient == null) {
       googleApiClient = new GoogleApiClient.Builder(this)
@@ -220,7 +212,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     swipeRefreshLayout.setOnRefreshListener(() -> {
       swipeRefreshLayout.setRefreshing(true);
-      RecView(lat,lng);
+      RecView(lat, lng);
     });
 
   }
@@ -323,7 +315,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   public void setCategories(List<Category> categoryList) {
     Stream.of(categoryList)
-        .forEach(category -> tabs.addTab(tabs.newTab().setText(category.getCategoryName()).setTag(category.getCategoryID())));
+        .forEach(category -> tabs.addTab(
+            tabs.newTab().setText(category.getCategoryName()).setTag(category.getCategoryID())));
   }
 
   public void startDrawer() {
@@ -391,7 +384,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
 
-    switch (item.getItemId()){
+    switch (item.getItemId()) {
       case R.id.my_location:
         LatLng latlng = new LatLng(lat, lng);
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -401,7 +394,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         break;
       case R.id.calendar:
-        dateRangePickerFragment.show(getSupportFragmentManager(),"datePicker");
+        dateRangePickerFragment.show(getSupportFragmentManager(), "datePicker");
         break;
     }
     return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
@@ -531,8 +524,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   @Override
   public boolean onQueryTextSubmit(String query) {
-    discoverFragment = SearchDiscoverFragment.newInstance(this,query,HomeActivity.this);
-    discoverFragment.show(getSupportFragmentManager(),"discover");
+    discoverFragment = SearchDiscoverFragment.newInstance(this, query, HomeActivity.this);
+    discoverFragment.show(getSupportFragmentManager(), "discover");
     /*if (query.length() > 2) {
       loadLocations(query);
     }*/
@@ -633,42 +626,42 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
   public void onDateRangeSelected(int startDay, int startMonth, int startYear, int endDay,
       int endMonth, int endYear) {
     Date from = new GregorianCalendar(startYear, startMonth, startDay).getTime();
-    Date to = new GregorianCalendar(endYear,endMonth,endDay).getTime();
-    if(adapter != null){
-      adapter.filter(from,to,category);
+    Date to = new GregorianCalendar(endYear, endMonth, endDay).getTime();
+    if (adapter != null) {
+      adapter.filter(from, to, category);
     }
   }
 
   @Override
-  public void onDiscoverElementSelected(String type, int id, String lat, String lng,String name) {
-      switch (type){
-        case "event":
-          Intent intent = new Intent(this, PageEventActivity.class);
-          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-          intent.putExtra("EventId", String.valueOf(id));
-          startActivity(intent);
-          break;
-        case "location":
-          mMap.clear();
-          searchCityTxt.setText(name);
-          searchCityTxt.setText(name);
-          searchView.setQuery(name, false);
-          searchView.setQueryHint(name);
-          LatLng latlng = new LatLng(Double.parseDouble(lat),Double.parseDouble(lng));
-          CameraPosition cameraPosition = new CameraPosition.Builder()
-              .target(latlng)              // Center Set
-              .zoom(FIRST_ZOOM)                // Zoom
-              .build();
-          mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-          RecView(latlng.latitude,latlng.longitude);
-          break;
-        case "venue":
-          Intent i = new Intent(this, PagePlaceActivity.class);
-          i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-          i.putExtra("VenueId", String.valueOf(id));
-          startActivity(i);
-          break;
-      }
+  public void onDiscoverElementSelected(String type, int id, String lat, String lng, String name) {
+    switch (type) {
+      case "event":
+        Intent intent = new Intent(this, PageEventActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("EventId", String.valueOf(id));
+        startActivity(intent);
+        break;
+      case "location":
+        mMap.clear();
+        searchCityTxt.setText(name);
+        searchCityTxt.setText(name);
+        searchView.setQuery(name, false);
+        searchView.setQueryHint(name);
+        LatLng latlng = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+            .target(latlng)              // Center Set
+            .zoom(FIRST_ZOOM)                // Zoom
+            .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        RecView(latlng.latitude, latlng.longitude);
+        break;
+      case "venue":
+        Intent i = new Intent(this, PagePlaceActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.putExtra("VenueId", String.valueOf(id));
+        startActivity(i);
+        break;
+    }
   }
 
   private class DrawerItemClickListener implements ListView.OnItemClickListener {

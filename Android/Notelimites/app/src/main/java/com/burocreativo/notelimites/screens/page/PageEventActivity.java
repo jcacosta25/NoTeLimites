@@ -10,9 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-
 import com.burocreativo.notelimites.NTLApplication;
 import com.burocreativo.notelimites.R;
 import com.burocreativo.notelimites.databinding.ActivityPageEventBinding;
@@ -24,15 +22,13 @@ import com.burocreativo.notelimites.io.models.relationship.Follow;
 import com.burocreativo.notelimites.io.models.user.UserResponse;
 import com.burocreativo.notelimites.screens.adapters.PageListAdapter;
 import com.burocreativo.notelimites.screens.login.StartActivity;
-
-import java.util.List;
-
 import io.branch.indexing.BranchUniversalObject;
 import io.branch.referral.Branch;
 import io.branch.referral.BranchError;
 import io.branch.referral.SharingHelper;
 import io.branch.referral.util.LinkProperties;
 import io.branch.referral.util.ShareSheetStyle;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

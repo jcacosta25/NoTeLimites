@@ -1,29 +1,18 @@
 package com.burocreativo.notelimites.screens.adapters;
 
-import static com.burocreativo.notelimites.screens.home.HomeActivity.mMap;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.LayoutParams;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-
-import android.widget.TextView;
 import com.annimon.stream.Stream;
 import com.burocreativo.notelimites.BR;
 import com.burocreativo.notelimites.NTLApplication;
@@ -35,16 +24,10 @@ import com.burocreativo.notelimites.io.models.relationship.Follow;
 import com.burocreativo.notelimites.io.models.user.UserResponse;
 import com.burocreativo.notelimites.screens.login.StartActivity;
 import com.burocreativo.notelimites.screens.page.PageEventActivity;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import de.morrox.fontinator.FontTextView;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -100,12 +83,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
           followedCall = ServiceGenerator.getApiService().followEvent(
               new Follow(NTLApplication.tinyDB.getString("user_id"),
                   String.valueOf(event.getEventID())));
-          ((Event) filterList.get(position)).setAttendings(event.getAttendings()+1);
+          ((Event) filterList.get(position)).setAttendings(event.getAttendings() + 1);
         } else {
           followedCall = ServiceGenerator.getApiService().unFollowEvent(
               new Follow(NTLApplication.tinyDB.getString("user_id"),
                   String.valueOf(event.getEventID())));
-          ((Event) filterList.get(position)).setAttendings(event.getAttendings()-1);
+          ((Event) filterList.get(position)).setAttendings(event.getAttendings() - 1);
         }
 
         followedCall.enqueue(new Callback<EventFollowed>() {
@@ -180,19 +163,21 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     }
   }
 
-  public void filter(Date from, Date to, final  int cat){
+  public void filter(Date from, Date to, final int cat) {
     filterList = new ArrayList<>();
     notifyDataSetChanged();
-    if(cat == 0){
+    if (cat == 0) {
       Stream.of(eventList)
-          .filter(event -> event.getInitDate().after(from) && event.getInitDate().before(to) || event.getInitDate().equals(from) || event.getInitDate().equals(to))
+          .filter(
+              event -> event.getInitDate().after(from) && event.getInitDate().before(to) || event
+                  .getInitDate().equals(from) || event.getInitDate().equals(to))
           .forEach(event -> {
             filterList.add(event);
             notifyDataSetChanged();
           });
     } else {
       Stream.of(eventList)
-          .filter(event -> event.getEventtypeID() == cat +1)
+          .filter(event -> event.getEventtypeID() == cat + 1)
           .filter(event -> event.getInitDate().after(from) && event.getInitDate().before(to))
           .forEach(event -> {
             filterList.add(event);
@@ -200,7 +185,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
           });
     }
   }
-
 
 
   class ViewHolder extends RecyclerView.ViewHolder {
