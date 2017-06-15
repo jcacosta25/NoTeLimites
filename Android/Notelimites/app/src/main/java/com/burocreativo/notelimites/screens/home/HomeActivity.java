@@ -22,7 +22,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -116,7 +115,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
   private int category = 0;
   DateRangePickerFragment dateRangePickerFragment;
   SearchDiscoverFragment discoverFragment;
-  private SwipeRefreshLayout swipeRefreshLayout;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +122,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     setContentView(R.layout.activity_maps);
     cityName = getIntent().getStringExtra("city");
     dateRangePickerFragment = DateRangePickerFragment.newInstance(HomeActivity.this, false);
-    swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
     if (googleApiClient == null) {
       googleApiClient = new GoogleApiClient.Builder(this)
           .addConnectionCallbacks(this)
@@ -210,10 +207,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         cursor, columns, null, -1000);
     searchView.setSuggestionsAdapter(searchFeedResultsAdapter);
 
-    swipeRefreshLayout.setOnRefreshListener(() -> {
-      swipeRefreshLayout.setRefreshing(true);
-      RecView(lat, lng);
-    });
 
   }
 
@@ -238,7 +231,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     Callback<EventsList> callback = new Callback<EventsList>() {
       @Override
       public void onResponse(Call<EventsList> call, Response<EventsList> response) {
-        swipeRefreshLayout.setRefreshing(false);
         if (response.isSuccessful()) {
           setMarkers(response.body().getVenues());
           setCategories(response.body().getCategories());

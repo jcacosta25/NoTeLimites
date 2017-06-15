@@ -22,6 +22,14 @@ retrolambda {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('../notelimites.jks')
+            keyAlias 'NoTeLimites'
+            keyPassword KEYSTORE_PASSWORD
+            storePassword KEY_PASSWORD
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
     defaultConfig {
@@ -33,11 +41,18 @@ android {
         multiDexEnabled true
     }
     dexOptions {
-        javaMaxHeapSize "4G"
+        preDexLibraries = false
+        javaMaxHeapSize "2g"
     }
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -65,7 +80,6 @@ dependencies {
     compile 'com.google.android.gms:play-services:10.0.1'
     compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.android.support:design:25.3.1'
-    compile 'com.android.volley:volley:1.0.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
